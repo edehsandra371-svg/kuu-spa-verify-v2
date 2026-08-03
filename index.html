@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Kuu Spa+ Verification</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+text-align:center;
+background:#fff8dc;
+padding:20px;
+}
+
+img{
+width:250px;
+margin:20px;
+}
+
+input{
+padding:10px;
+width:250px;
+font-size:16px;
+}
+
+button{
+padding:10px 20px;
+font-size:16px;
+background:#b8860b;
+color:white;
+border:none;
+cursor:pointer;
+margin-top:10px;
+}
+
+#result{
+margin-top:20px;
+font-size:20px;
+font-weight:bold;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>Kuu Spa+ Turmeric Whitening Serum</h1>
+
+<img src="file_00000000366081f49e0c1df82b188d4a.png" alt="Kuu Spa+ Whitening Serum">
+
+<h2>Product Details</h2>
+
+<p><b>Product Name:</b> Kuu Spa+ Turmeric Whitening Serum</p>
+
+<p><b>Description:</b> Premium skincare serum formulated to help brighten, hydrate and nourish the skin.</p>
+
+<h3>Ingredients</h3>
+
+<ul>
+<li>Hyaluronic Acid Powder</li>
+<li>Vegetable Glycerin</li>
+<li>Vitamin C Oil</li>
+<li>Turmeric Extract</li>
+</ul>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Helps improve skin glow</li>
+<li>Provides hydration</li>
+<li>Supports smooth and healthy-looking skin</li>
+</ul>
+
+<hr>
+
+<h2>Verify Your Product</h2>
+
+<input type="text" id="serial" placeholder="Enter Serial Number">
+
+<br><br>
+
+<button onclick="verifyProduct()">Verify Product</button>
+
+<p id="result"></p>
+
+<script>
+
+const validCodes = [
+"KSP-000001",
+"KSP-000002",
+"KSP-000003",
+"KSP-000004",
+"KSP-000005"
+];
+
+function verifyProduct(){
+
+let code=document.getElementById("serial").value.trim().toUpperCase();
+
+if(validCodes.includes(code)){
+
+document.getElementById("result").innerHTML=
+"✅ PRODUCT VERIFIED<br><br>Serial Number: "+code+"<br>Status: Original Kuu Spa+ Product";
+
+}else{
+
+document.getElementById("result").innerHTML=
+"❌ Verification Failed.<br>Invalid Serial Number.";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
