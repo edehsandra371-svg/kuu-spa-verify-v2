@@ -1,111 +1,148 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Kuu Spa+ Verification</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuu Spa+ Product Verification</title>
 
 <style>
 body{
-font-family:Arial,sans-serif;
-text-align:center;
-background:#fff8dc;
-padding:20px;
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:500px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+    text-align:center;
 }
 
 img{
-width:250px;
-margin:20px;
+    width:200px;
+    border-radius:10px;
 }
 
 input{
-padding:10px;
-width:250px;
-font-size:16px;
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    box-sizing:border-box;
+    font-size:16px;
 }
 
 button{
-padding:10px 20px;
-font-size:16px;
-background:#b8860b;
-color:white;
-border:none;
-cursor:pointer;
-margin-top:10px;
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    background:#b8860b;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
 }
 
-#result{
-margin-top:20px;
-font-size:20px;
-font-weight:bold;
+.success{
+    background:#d4edda;
+    color:#155724;
+    padding:15px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+.error{
+    background:#f8d7da;
+    color:#721c24;
+    padding:15px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+#status{
+    margin-top:15px;
+    font-size:14px;
+    color:#555;
 }
 </style>
-
 </head>
 
 <body>
 
-<h1>Kuu Spa+ Turmeric Whitening Serum</h1>
+<div class="container">
 
-<img src="file_00000000366081f49e0c1df82b188d4a.png" alt="Kuu Spa+ Whitening Serum">
+<img src="file_00000000366081f49e0c1df82b188d4a.png" alt="Kuu Spa+">
 
-<h2>Product Details</h2>
+<h1>Kuu Spa+ Product Verification</h1>
 
-<p><b>Product Name:</b> Kuu Spa+ Turmeric Whitening Serum</p>
+<p>Enter your serial number below.</p>
 
-<p><b>Description:</b> Premium skincare serum formulated to help brighten, hydrate and nourish the skin.</p>
+<input id="serial" placeholder="Example: KSP-B1-000001">
 
-<h3>Ingredients</h3>
+<button onclick="verifySerial()">Verify Product</button>
 
-<ul>
-<li>Hyaluronic Acid Powder</li>
-<li>Vegetable Glycerin</li>
-<li>Vitamin C Oil</li>
-<li>Turmeric Extract</li>
-</ul>
+<div id="status">Loading serial database...</div>
 
-<h3>Benefits</h3>
+<div id="result"></div>
 
-<ul>
-<li>Helps improve skin glow</li>
-<li>Provides hydration</li>
-<li>Supports smooth and healthy-looking skin</li>
-</ul>
-
-<hr>
-
-<h2>Verify Your Product</h2>
-
-<input type="text" id="serial" placeholder="Enter Serial Number">
-
-<br><br>
-
-<button onclick="verifyProduct()">Verify Product</button>
-
-<p id="result"></p>
+</div>
 
 <script>
 
-const validCodes = [
-"KSP-000001",
-"KSP-000002",
-"KSP-000003",
-"KSP-000004",
-"KSP-000005"
-];
+let serialDatabase=[];
 
-function verifyProduct(){
+fetch("batch1_serials.json")
+.then(response=>{
+    if(!response.ok){
+        throw new Error("Database not found");
+    }
+    return response.json();
+})
+.then(data=>{
 
-let code=document.getElementById("serial").value.trim().toUpperCase();
+    serialDatabase=data;
 
-if(validCodes.includes(code)){
+    document.getElementById("status").innerHTML=
+    "✅ "+serialDatabase.length+" serial numbers loaded.";
 
-document.getElementById("result").innerHTML=
-"✅ PRODUCT VERIFIED<br><br>Serial Number: "+code+"<br>Status: Original Kuu Spa+ Product";
+})
+.catch(error=>{
+
+    document.getElementById("status").innerHTML=
+    "❌ "+error.message;
+
+    console.error(error);
+
+});
+
+function verifySerial(){
+
+const code=document.getElementById("serial").value.trim().toUpperCase();
+
+const result=document.getElementById("result");
+
+if(serialDatabase.includes(code)){
+
+result.innerHTML=
+`<div class="success">
+<h2>✅ AUTHENTIC PRODUCT</h2>
+<p><strong>Kuu Spa+ Whitening Serum</strong></p>
+<p>Serial Number:<br><strong>${code}</strong></p>
+<p>This product is genuine.</p>
+</div>`;
 
 }else{
 
-document.getElementById("result").innerHTML=
-"❌ Verification Failed.<br>Invalid Serial Number.";
+result.innerHTML=
+`<div class="error">
+<h2>❌ INVALID SERIAL NUMBER</h2>
+<p>This serial number was not found.</p>
+</div>`;
 
 }
 
