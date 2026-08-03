@@ -1,67 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Kuu Spa+ Product Verification</title>
 
 <style>
+
 body{
-    font-family:Arial,sans-serif;
-    background:#f5f5f5;
     margin:0;
-    padding:20px;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#fff8dc,#f5e6b3);
+    color:#333;
 }
 
 .container{
     max-width:500px;
-    margin:auto;
+    margin:40px auto;
     background:white;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 5px 20px rgba(0,0,0,.15);
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
     text-align:center;
 }
 
-img{
-    width:200px;
-    border-radius:10px;
+.logo{
+    width:230px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+h1{
+    color:#b8860b;
+    font-size:28px;
+}
+
+.subtitle{
+    color:#555;
 }
 
 input{
     width:100%;
-    padding:12px;
+    padding:15px;
     margin-top:15px;
-    box-sizing:border-box;
     font-size:16px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    box-sizing:border-box;
 }
 
 button{
     width:100%;
-    padding:12px;
     margin-top:15px;
+    padding:15px;
     background:#b8860b;
     color:white;
     border:none;
-    border-radius:8px;
+    border-radius:10px;
     font-size:16px;
     cursor:pointer;
 }
 
-.success{
-    background:#d4edda;
-    color:#155724;
-    padding:15px;
-    border-radius:10px;
-    margin-top:20px;
-}
-
-.error{
-    background:#f8d7da;
-    color:#721c24;
-    padding:15px;
-    border-radius:10px;
-    margin-top:20px;
+button:hover{
+    background:#8f6700;
 }
 
 #status{
@@ -69,86 +72,184 @@ button{
     font-size:14px;
     color:#555;
 }
+
+.success{
+    margin-top:25px;
+    padding:20px;
+    border-radius:15px;
+    background:#e8f8e8;
+    border:2px solid #2e8b57;
+}
+
+.error{
+    margin-top:25px;
+    padding:20px;
+    border-radius:15px;
+    background:#ffe8e8;
+    border:2px solid #cc0000;
+}
+
+.badge{
+    font-size:40px;
+}
+
+.footer{
+    margin-top:30px;
+    font-size:13px;
+    color:#777;
+}
+
 </style>
+
 </head>
+
 
 <body>
 
 <div class="container">
 
-<img src="file_00000000366081f49e0c1df82b188d4a.png" alt="Kuu Spa+">
 
-<h1>Kuu Spa+ Product Verification</h1>
+<img class="logo" src="file_00000000366081f49e0c1df82b188d4a.png" alt="Kuu Spa+ Whitening Serum">
 
-<p>Enter your serial number below.</p>
 
-<input id="serial" placeholder="Example: KSP-B1-000001">
+<h1>Kuu Spa+</h1>
 
-<button onclick="verifySerial()">Verify Product</button>
+<h2>Product Verification</h2>
 
-<div id="status">Loading serial database...</div>
+<p class="subtitle">
+Protecting customers with genuine Kuu Spa+ products.
+</p>
+
+
+<input id="serial" placeholder="Enter Serial Number
+Example: KSP-B1-000001">
+
+
+<button onclick="verifyProduct()">
+Verify Product
+</button>
+
+
+<div id="status">
+Loading serial database...
+</div>
+
 
 <div id="result"></div>
 
+
+<div class="footer">
+© Kuu Spa+ Authentic Product Verification System
 </div>
+
+
+</div>
+
+
 
 <script>
 
 let serialDatabase=[];
 
+
 fetch("batch1_serials.json")
-.then(response=>{
-    if(!response.ok){
-        throw new Error("Database not found");
-    }
-    return response.json();
-})
+
+.then(response=>response.json())
+
 .then(data=>{
 
-    serialDatabase=data;
+serialDatabase=data;
 
-    document.getElementById("status").innerHTML=
-    "✅ "+serialDatabase.length+" serial numbers loaded.";
+document.getElementById("status").innerHTML=
+"✅ "+serialDatabase.length+" serial numbers loaded.";
 
 })
+
+
 .catch(error=>{
 
-    document.getElementById("status").innerHTML=
-    "❌ "+error.message;
-
-    console.error(error);
+document.getElementById("status").innerHTML=
+"❌ Database loading error.";
 
 });
 
-function verifySerial(){
 
-const code=document.getElementById("serial").value.trim().toUpperCase();
 
-const result=document.getElementById("result");
+function verifyProduct(){
+
+
+let code=document
+.getElementById("serial")
+.value
+.trim()
+.toUpperCase();
+
+
+
+let result=document.getElementById("result");
+
+
 
 if(serialDatabase.includes(code)){
 
-result.innerHTML=
-`<div class="success">
-<h2>✅ AUTHENTIC PRODUCT</h2>
-<p><strong>Kuu Spa+ Whitening Serum</strong></p>
-<p>Serial Number:<br><strong>${code}</strong></p>
-<p>This product is genuine.</p>
-</div>`;
+
+result.innerHTML=`
+
+<div class="success">
+
+<div class="badge">✅</div>
+
+<h2>AUTHENTIC PRODUCT</h2>
+
+<p><strong>Kuu Spa+ Turmeric Whitening Serum</strong></p>
+
+<p>Serial Number:</p>
+
+<h3>${code}</h3>
+
+<p>
+This product has been successfully verified
+and is a genuine Kuu Spa+ product.
+</p>
+
+</div>
+
+`;
+
+
 
 }else{
 
-result.innerHTML=
-`<div class="error">
-<h2>❌ INVALID SERIAL NUMBER</h2>
-<p>This serial number was not found.</p>
-</div>`;
+
+result.innerHTML=`
+
+<div class="error">
+
+<div class="badge">❌</div>
+
+<h2>INVALID SERIAL NUMBER</h2>
+
+<p>
+This serial number was not found in our database.
+</p>
+
+<p>
+Please contact your distributor if you believe this is an error.
+</p>
+
+</div>
+
+`;
+
 
 }
 
+
 }
+
 
 </script>
+
 
 </body>
 </html>
