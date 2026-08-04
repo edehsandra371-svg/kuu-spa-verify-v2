@@ -1,1 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KUU SPA+ Barcode Generator</title>
 
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
+    text-align:center;
+    padding:30px;
+}
+
+.container{
+    background:#fff;
+    max-width:500px;
+    margin:auto;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 0 10px rgba(0,0,0,.15);
+}
+
+h1{
+    color:#b8860b;
+}
+
+input{
+    width:90%;
+    padding:12px;
+    font-size:18px;
+    margin:15px 0;
+}
+
+button{
+    background:#b8860b;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    font-size:18px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+svg{
+    margin-top:20px;
+}
+
+.serial{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>KUU SPA+</h1>
+<h3>Code 128 Barcode Generator</h3>
+
+<input
+id="serial"
+value="KSP-B1-000001">
+
+<br>
+
+<button onclick="generateBarcode()">
+Generate Barcode
+</button>
+
+<br><br>
+
+<svg id="barcode"></svg>
+
+<div class="serial" id="serialText"></div>
+
+</div>
+
+<script>
+
+function generateBarcode(){
+
+let serial=document.getElementById("serial").value;
+
+JsBarcode("#barcode",serial,{
+format:"CODE128",
+displayValue:false,
+height:80,
+width:2,
+margin:10
+});
+
+document.getElementById("serialText").innerHTML=serial;
+
+}
+
+generateBarcode();
+
+</script>
+
+</body>
+</html>
