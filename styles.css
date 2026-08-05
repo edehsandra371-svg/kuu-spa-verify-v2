@@ -1,1 +1,93 @@
+/* ==========================
+   KUU SPA+ Authentication System
+   styles.css
+========================== */
 
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f5f5;
+    margin:20px;
+}
+
+h1{
+    text-align:center;
+    color:#b8860b;
+}
+
+.controls{
+    text-align:center;
+    margin:20px 0;
+}
+
+button{
+    background:#b8860b;
+    color:white;
+    border:none;
+    padding:12px 22px;
+    margin:5px;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#996f00;
+}
+
+.page-info{
+    text-align:center;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+#labels{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+    gap:20px;
+}
+
+.label{
+    background:white;
+    border:1px solid #ccc;
+    border-radius:10px;
+    padding:15px;
+    text-align:center;
+    page-break-inside:avoid;
+}
+
+.brand{
+    font-size:18px;
+    font-weight:bold;
+    color:#b8860b;
+    margin-bottom:10px;
+}
+
+.serial{
+    margin-top:10px;
+    font-weight:bold;
+}
+
+.verify{
+    margin-top:8px;
+    font-size:13px;
+    color:#555;
+}
+
+@media print{
+
+.controls,
+.page-info{
+    display:none;
+}
+
+body{
+    background:white;
+    margin:0;
+}
+
+.label{
+    box-shadow:none;
+    border:1px solid #999;
+}
+
+}
