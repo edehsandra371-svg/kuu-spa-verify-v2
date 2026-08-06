@@ -45,6 +45,20 @@ h1{
     font-weight:bold;
 }
 
+button{
+    background:#b8860b;
+    color:white;
+    border:none;
+    padding:12px 24px;
+    font-size:18px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#8f6700;
+}
+
 @media print{
     body{
         background:white;
@@ -52,6 +66,10 @@ h1{
 
     .label{
         box-shadow:none;
+    }
+
+    button{
+        display:none;
     }
 }
 </style>
@@ -61,68 +79,53 @@ h1{
 <body>
 
 <h1>KUU SPA+ Batch B1 Barcode Labels</h1>
-    
+
 <div style="text-align:center;margin:20px 0;">
-    <button onclick="window.print()"
-        style="background:#b8860b;color:white;
-        border:none;padding:12px 24px;
-        font-size:18px;border-radius:8px;cursor:pointer;">
-        🖨️ Print Labels
-    </button>
+    <button onclick="window.print()">🖨️ Print Labels</button>
 </div>
 
 <div id="labels"></div>
 
-
 <script>
 
 fetch("batch1_serials.json")
-.then(r=>r.json())
-.then(serials=>{
+.then(response => response.json())
+.then(serials => {
 
-const container=document.getElementById("labels");
+    const container = document.getElementById("labels");
 
-const labelsPerPage = 100;
+    serials.forEach((serial, index) => {
 
-let currentPage = 1;
+        const label = document.createElement("div");
+        label.className = "label";
 
-const start = (currentPage - 1) * labelsPerPage;
+        label.innerHTML = `
+            <div class="brand">KUU SPA+</div>
+            <svg id="barcode${index}"></svg>
+            <div class="serial">${serial}</div>
+            <div style="font-size:12px;margin-top:8px;">
+                Scan to verify authenticity
+            </div>
+        `;
 
-const end = Math.min(start + labelsPerPage, serials.length);
+        container.appendChild(label);
 
-for (let index = start; index < end; index++) {
+        JsBarcode(`#barcode${index}`, serial, {
+            format: "CODE128",
+            displayValue: false,
+            height: 60,
+            width: 2,
+            margin: 10
+        });
 
-const serial = serials[index];
+    });
 
-const box=document.createElement("div");
-
-box.className="label";
-
-box.innerHTML=`
-<div class="brand">KUU SPA+</div>
-
-<svg id="barcode${index}"></svg>
-
-<div class="serial">${serial}</div>
-`;
-
-container.appendChild(box);
-
-JsBarcode(
-`#barcode${index}`,
-serial,
-{
-format:"CODE128",
-displayValue:false,
-height:60,
-width:2,
-margin:10
-}
-);
-
+})
+.catch(error => {
+    document.getElementById("labels").innerHTML =
+        "<h2 style='color:red'>Failed to load serial numbers.</h2>";
+    console.error(error);
 });
-
-}
 
 </script>
 
