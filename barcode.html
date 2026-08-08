@@ -1,109 +1,668 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
 <title>KUU SPA+ Barcode Generator</title>
 
-<script src="https://unpkg.com/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<meta
+    name="description"
+    content="KUU SPA+ single product barcode generator."
+>
+
+<meta
+    name="theme-color"
+    content="#b8860b"
+>
+
+<!-- Barcode Library -->
+<script
+    src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js">
+</script>
+
 
 <style>
-body{
-    font-family:Arial,sans-serif;
-    background:#f5f5f5;
-    text-align:center;
-    padding:30px;
-}
 
-.container{
-    background:#fff;
-    max-width:500px;
-    margin:auto;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 0 10px rgba(0,0,0,.15);
-}
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
 
-h1{
-    color:#b8860b;
-}
 
-input{
-    width:90%;
-    padding:12px;
-    font-size:18px;
-    margin:15px 0;
-}
+    body {
 
-button{
-    background:#b8860b;
-    color:white;
-    border:none;
-    padding:12px 20px;
-    font-size:18px;
-    border-radius:8px;
-    cursor:pointer;
-}
+        min-height: 100vh;
 
-svg{
-    margin-top:20px;
-}
+        font-family:
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            Roboto,
+            Arial,
+            sans-serif;
 
-.serial{
-    margin-top:15px;
-    font-size:20px;
-    font-weight:bold;
-}
+        background:
+            linear-gradient(
+                135deg,
+                #fffdf5,
+                #f5e8c4
+            );
+
+        color: #222;
+
+        padding: 20px;
+    }
+
+
+    .container {
+
+        width: 100%;
+
+        max-width: 520px;
+
+        margin: 20px auto;
+    }
+
+
+    .card {
+
+        background: #ffffff;
+
+        border-radius: 24px;
+
+        padding: 30px 25px;
+
+        box-shadow:
+            0 20px 50px
+            rgba(70, 50, 10, 0.15);
+
+        border:
+            1px solid
+            rgba(184, 134, 11, 0.15);
+    }
+
+
+    .top-line {
+
+        height: 4px;
+
+        width: 100%;
+
+        border-radius: 10px;
+
+        margin-bottom: 25px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #8f6700,
+                #d4af37,
+                #f2d675,
+                #b8860b
+            );
+    }
+
+
+    h1 {
+
+        text-align: center;
+
+        color: #9a7100;
+
+        font-size: 27px;
+
+        margin-bottom: 8px;
+    }
+
+
+    .subtitle {
+
+        text-align: center;
+
+        color: #777;
+
+        font-size: 14px;
+
+        line-height: 1.5;
+
+        margin-bottom: 25px;
+    }
+
+
+    label {
+
+        display: block;
+
+        font-size: 14px;
+
+        font-weight: 700;
+
+        margin-bottom: 8px;
+    }
+
+
+    input {
+
+        width: 100%;
+
+        padding: 15px;
+
+        border:
+            2px solid
+            #e2d8b9;
+
+        border-radius: 12px;
+
+        background: #fffdf8;
+
+        font-size: 16px;
+
+        outline: none;
+    }
+
+
+    input:focus {
+
+        border-color: #b8860b;
+
+        box-shadow:
+            0 0 0 4px
+            rgba(184, 134, 11, 0.10);
+    }
+
+
+    .button {
+
+        width: 100%;
+
+        margin-top: 14px;
+
+        padding: 15px;
+
+        border: none;
+
+        border-radius: 12px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #b8860b,
+                #d4af37
+            );
+
+        color: white;
+
+        font-size: 16px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+    }
+
+
+    .button:hover {
+
+        opacity: 0.9;
+    }
+
+
+    .barcode-area {
+
+        display: none;
+
+        margin-top: 30px;
+
+        padding: 25px 15px;
+
+        border-radius: 15px;
+
+        background: #fafafa;
+
+        border:
+            1px solid
+            #e6dfc9;
+
+        text-align: center;
+    }
+
+
+    .barcode-area.visible {
+
+        display: block;
+    }
+
+
+    .barcode-title {
+
+        font-size: 15px;
+
+        font-weight: 700;
+
+        color: #555;
+
+        margin-bottom: 18px;
+    }
+
+
+    #barcode {
+
+        max-width: 100%;
+
+        height: auto;
+    }
+
+
+    .serial-display {
+
+        margin-top: 12px;
+
+        font-size: 17px;
+
+        font-weight: 700;
+
+        letter-spacing: 1px;
+
+        color: #222;
+
+        word-break: break-word;
+    }
+
+
+    .print-button {
+
+        margin-top: 20px;
+
+        width: 100%;
+
+        padding: 13px;
+
+        border:
+            1px solid
+            #b8860b;
+
+        border-radius: 10px;
+
+        background: white;
+
+        color: #9a7100;
+
+        font-size: 14px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+    }
+
+
+    .message {
+
+        min-height: 20px;
+
+        margin-top: 12px;
+
+        text-align: center;
+
+        font-size: 13px;
+
+        color: #777;
+    }
+
+
+    .footer {
+
+        text-align: center;
+
+        margin-top: 25px;
+
+        padding-top: 18px;
+
+        border-top:
+            1px solid
+            #eee7d5;
+
+        color: #888;
+
+        font-size: 12px;
+
+        line-height: 1.6;
+    }
+
+
+    .footer strong {
+
+        color: #9a7100;
+    }
+
+
+    @media print {
+
+        body {
+
+            background: white;
+
+            padding: 0;
+        }
+
+
+        .card {
+
+            box-shadow: none;
+
+            border: none;
+
+            max-width: none;
+        }
+
+
+        .top-line,
+        .subtitle,
+        label,
+        input,
+        .button,
+        .message,
+        .footer,
+        .print-button {
+
+            display: none !important;
+        }
+
+
+        .barcode-area {
+
+            display: block;
+
+            border: none;
+
+            margin: 0;
+
+        }
+
+
+        h1 {
+
+            color: black;
+
+        }
+
+    }
+
+
+    @media(max-width: 400px) {
+
+        .card {
+
+            padding: 25px 18px;
+        }
+
+
+        h1 {
+
+            font-size: 23px;
+        }
+
+    }
+
 </style>
 
-</head>
+</head><body><div class="container"><div class="card">
 
-<body>
 
-<div class="container">
+    <div class="top-line"></div>
 
-<h1>KUU SPA+</h1>
-<h3>Code 128 Barcode Generator</h3>
 
-<input
-id="serial"
-value="KSP-B1-000001">
+    <h1>
+        KUU SPA+ Barcode Generator
+    </h1>
 
-<br>
 
-<button onclick="generateBarcode()">
-Generate Barcode
-</button>
+    <p class="subtitle">
+        Generate a Code 128 barcode for
+        an individual product serial number.
+    </p>
 
-<br><br>
 
-<svg id="barcode"></svg>
+    <label for="serialInput">
+        Product Serial Number
+    </label>
 
-<div class="serial" id="serialText"></div>
+
+    <input
+        id="serialInput"
+        type="text"
+        autocomplete="off"
+        autocapitalize="characters"
+        placeholder="Example: KSP-B1-000001"
+    >
+
+
+    <button
+        class="button"
+        type="button"
+        onclick="generateBarcode()"
+    >
+        Generate Barcode
+    </button>
+
+
+    <div
+        id="message"
+        class="message"
+    ></div>
+
+
+    <div
+        id="barcodeArea"
+        class="barcode-area"
+    >
+
+        <div class="barcode-title">
+            KUU SPA+ Product Barcode
+        </div>
+
+
+        <svg
+            id="barcode"
+        ></svg>
+
+
+        <div
+            id="serialDisplay"
+            class="serial-display"
+        ></div>
+
+
+        <button
+            class="print-button"
+            type="button"
+            onclick="printBarcode()"
+        >
+            🖨️ Print Barcode
+        </button>
+
+    </div>
+
+
+    <div class="footer">
+
+        KUU SPA+ Barcode System<br>
+
+        Powered by
+        <strong>Daisy Creative Studio</strong>
+
+    </div>
+
 
 </div>
 
-<script>
+</div><script>
 
-function generateBarcode(){
+    const serialInput =
+        document.getElementById(
+            "serialInput"
+        );
 
-let serial=document.getElementById("serial").value;
 
-JsBarcode("#barcode",serial,{
-format:"CODE128",
-displayValue:false,
-height:80,
-width:2,
-margin:10
-});
+    const barcodeArea =
+        document.getElementById(
+            "barcodeArea"
+        );
 
-document.getElementById("serialText").innerHTML=serial;
 
-}
+    const serialDisplay =
+        document.getElementById(
+            "serialDisplay"
+        );
 
-generateBarcode();
 
-</script>
+    const message =
+        document.getElementById(
+            "message"
+        );
 
-</body>
-</html>
+
+    function normalizeSerial(value) {
+
+        return String(value || "")
+            .trim()
+            .toUpperCase()
+            .replace(/\s+/g, "");
+
+    }
+
+
+    function generateBarcode() {
+
+        const serial =
+            normalizeSerial(
+                serialInput.value
+            );
+
+
+        message.textContent = "";
+
+
+        if (!serial) {
+
+            barcodeArea.classList.remove(
+                "visible"
+            );
+
+            message.textContent =
+                "Please enter a serial number.";
+
+            serialInput.focus();
+
+            return;
+
+        }
+
+
+        if (
+            typeof JsBarcode ===
+            "undefined"
+        ) {
+
+            message.textContent =
+                "Barcode library is not available. Check your internet connection.";
+
+            return;
+
+        }
+
+
+        try {
+
+            JsBarcode(
+                "#barcode",
+                serial,
+                {
+
+                    format: "CODE128",
+
+                    lineColor: "#000000",
+
+                    width: 2,
+
+                    height: 80,
+
+                    displayValue: true,
+
+                    fontSize: 16,
+
+                    margin: 10,
+
+                    textMargin: 8,
+
+                    valid: function(valid) {
+
+                        if (!valid) {
+
+                            throw new Error(
+                                "Invalid barcode data."
+                            );
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+            serialDisplay.textContent =
+                serial;
+
+
+            barcodeArea.classList.add(
+                "visible"
+            );
+
+
+            message.textContent =
+                "Barcode generated successfully.";
+
+
+        } catch (error) {
+
+            barcodeArea.classList.remove(
+                "visible"
+            );
+
+            message.textContent =
+                "Unable to generate barcode.";
+
+            console.error(error);
+
+        }
+
+    }
+
+
+    function printBarcode() {
+
+        window.print();
+
+    }
+
+
+    serialInput.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+                generateBarcode();
+
+            }
+
+        }
+    );
+
+</script></body></html>
