@@ -1,255 +1,115 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>KUU SPA+ Product Verification</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Kuu Spa+ Product Verification</title>
-
-<style>
-
-body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:linear-gradient(135deg,#fff8dc,#f5e6b3);
-    color:#333;
-}
-
-.container{
-    max-width:500px;
-    margin:40px auto;
-    background:white;
-    padding:30px;
-    border-radius:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.15);
-    text-align:center;
-}
+<meta name="description" content="Official KUU SPA+ product authenticity verification system.">
+<meta name="theme-color" content="#b8860b">
 
-.logo{
-    width:230px;
-    border-radius:15px;
-    margin-bottom:20px;
-}
+<link rel="stylesheet" href="styles.css">
 
-h1{
-    color:#b8860b;
-    font-size:28px;
-}
+</head><body><main class="container">
 
-.subtitle{
-    color:#555;
-}
+    <section class="verification-card">
 
-input{
-    width:100%;
-    padding:15px;
-    margin-top:15px;
-    font-size:16px;
-    border-radius:10px;
-    border:1px solid #ccc;
-    box-sizing:border-box;
-}
+        <!-- Brand -->
+        <header class="brand-section">
 
-button{
-    width:100%;
-    margin-top:15px;
-    padding:15px;
-    background:#b8860b;
-    color:white;
-    border:none;
-    border-radius:10px;
-    font-size:16px;
-    cursor:pointer;
-}
+            <img
+                class="logo"
+                src="file_00000000366081f49e0c1df82b188d4a.png"
+                alt="KUU SPA+ Turmeric Whitening Serum"
+            >
 
-button:hover{
-    background:#8f6700;
-}
+            <div class="brand-name">KUU SPA+</div>
 
-#status{
-    margin-top:15px;
-    font-size:14px;
-    color:#555;
-}
+            <h1>Product Verification</h1>
 
-.success{
-    margin-top:25px;
-    padding:20px;
-    border-radius:15px;
-    background:#e8f8e8;
-    border:2px solid #2e8b57;
-}
+            <p class="subtitle">
+                Verify your KUU SPA+ product to confirm its authenticity.
+            </p>
 
-.error{
-    margin-top:25px;
-    padding:20px;
-    border-radius:15px;
-    background:#ffe8e8;
-    border:2px solid #cc0000;
-}
+        </header>
 
-.badge{
-    font-size:40px;
-}
 
-.footer{
-    margin-top:30px;
-    font-size:13px;
-    color:#777;
-}
+        <!-- Verification Form -->
+        <section class="verification-section">
 
-</style>
+            <label for="serial">
+                Product Serial Number
+            </label>
 
-</head>
+            <input
+                id="serial"
+                type="text"
+                autocomplete="off"
+                autocapitalize="characters"
+                spellcheck="false"
+                placeholder="Example: KSP-B1-000001"
+                aria-label="Product Serial Number"
+            >
 
+            <button
+                id="verifyButton"
+                type="button"
+                onclick="verifyProduct()"
+            >
+                <span id="buttonText">Verify Product</span>
+            </button>
 
-<body>
+            <p id="status" class="status">
+                Loading verification database...
+            </p>
 
-<div class="container">
+        </section>
 
 
-<img class="logo" src="file_00000000366081f49e0c1df82b188d4a.png" alt="Kuu Spa+ Whitening Serum">
+        <!-- Verification Result -->
+        <section
+            id="result"
+            aria-live="polite"
+        ></section>
 
 
-<h1>Kuu Spa+</h1>
+        <!-- Security Notice -->
+        <div class="security-notice">
 
-<h2>Product Verification</h2>
+            <div class="security-icon">🔐</div>
 
-<p class="subtitle">
-Protecting customers with genuine Kuu Spa+ products.
-</p>
+            <div>
+                <strong>Authenticity Protection</strong>
 
+                <p>
+                    Always verify your serial number before purchasing
+                    or using a KUU SPA+ product.
+                </p>
+            </div>
 
-<input id="serial" placeholder="Enter Serial Number
-Example: KSP-B1-000001">
+        </div>
 
 
-<button onclick="verifyProduct()">
-Verify Product
-</button>
+        <!-- Footer -->
+        <footer class="footer">
 
+            <p>
+                © <span id="currentYear">2026</span>
+                KUU SPA+ Authentic Product Verification System
+            </p>
 
-<div id="status">
-Loading serial database...
-</div>
+            <p class="powered-by">
+                Verification system by
+                <strong>Daisy Creative Studio</strong>
+            </p>
 
+        </footer>
 
-<div id="result"></div>
+    </section>
 
+</main>
 
-<div class="footer">
-© Kuu Spa+ Authentic Product Verification System
-</div>
 
-
-</div>
-
-
-
-<script>
-
-let serialDatabase=[];
-
-
-fetch("batch1_serials.json")
-
-.then(response=>response.json())
-
-.then(data=>{
-
-serialDatabase=data;
-
-document.getElementById("status").innerHTML=
-"✅ "+serialDatabase.length+" serial numbers loaded.";
-
-})
-
-
-.catch(error=>{
-
-document.getElementById("status").innerHTML=
-"❌ Database loading error.";
-
-});
-
-
-
-function verifyProduct(){
-
-
-let code=document
-.getElementById("serial")
-.value
-.trim()
-.toUpperCase();
-
-
-
-let result=document.getElementById("result");
-
-
-
-if(serialDatabase.includes(code)){
-
-
-result.innerHTML=`
-
-<div class="success">
-
-<div class="badge">✅</div>
-
-<h2>AUTHENTIC PRODUCT</h2>
-
-<p><strong>Kuu Spa+ Turmeric Whitening Serum</strong></p>
-
-<p>Serial Number:</p>
-
-<h3>${code}</h3>
-
-<p>
-This product has been successfully verified
-and is a genuine Kuu Spa+ product.
-</p>
-
-</div>
-
-`;
-
-
-
-}else{
-
-
-result.innerHTML=`
-
-<div class="error">
-
-<div class="badge">❌</div>
-
-<h2>INVALID SERIAL NUMBER</h2>
-
-<p>
-This serial number was not found in our database.
-</p>
-
-<p>
-Please contact your distributor if you believe this is an error.
-</p>
-
-</div>
-
-`;
-
-
-}
-
-
-}
-
-
-</script>
-
+<!-- Verification Script -->
+<script src="script.js"></script>
 
 </body>
 </html>
