@@ -14,17 +14,21 @@
 
 <meta
     name="description"
-    content="KUU SPA+ batch barcode label printing system."
+    content="KUU SPA+ production barcode label system."
 >
 
-<meta
-    name="theme-color"
-    content="#b8860b"
->
 
+<!-- Code 128 Barcode Library -->
 
 <script
     src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js">
+</script>
+
+
+<!-- PDF Library -->
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
 </script>
 
 
@@ -72,9 +76,9 @@ body {
 }
 
 
-/* ==============================
-   CONTROL CARD
-============================== */
+/* =========================
+   CONTROL PANEL
+========================= */
 
 .control-card {
 
@@ -143,9 +147,9 @@ h1 {
 }
 
 
-/* ==============================
-   RANGE CONTROLS
-============================== */
+/* =========================
+   INPUTS
+========================= */
 
 .controls {
 
@@ -200,15 +204,17 @@ h1 {
 }
 
 
-/* ==============================
-   GENERATE BUTTON
-============================== */
+/* =========================
+   BUTTONS
+========================= */
 
-.generate-button {
+.generate-button,
+.print-button,
+.pdf-button {
 
     width: 100%;
 
-    margin-top: 18px;
+    margin-top: 15px;
 
     padding: 15px;
 
@@ -216,16 +222,9 @@ h1 {
 
     border-radius: 12px;
 
-    background:
-        linear-gradient(
-            135deg,
-            #b8860b,
-            #d4af37
-        );
-
     color: white;
 
-    font-size: 16px;
+    font-size: 15px;
 
     font-weight: 700;
 
@@ -233,15 +232,47 @@ h1 {
 }
 
 
-.generate-button:hover {
+.generate-button {
+
+    margin-top: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #b8860b,
+            #d4af37
+        );
+}
+
+
+.print-button {
+
+    background: #222;
+}
+
+
+.pdf-button {
+
+    background:
+        linear-gradient(
+            135deg,
+            #7b1f1f,
+            #a83232
+        );
+}
+
+
+.generate-button:hover,
+.print-button:hover,
+.pdf-button:hover {
 
     opacity: 0.9;
 }
 
 
-/* ==============================
+/* =========================
    QUICK RANGES
-============================== */
+========================= */
 
 .quick-ranges {
 
@@ -283,9 +314,9 @@ h1 {
 }
 
 
-/* ==============================
-   MESSAGE
-============================== */
+/* =========================
+   STATUS
+========================= */
 
 .message {
 
@@ -303,43 +334,9 @@ h1 {
 }
 
 
-/* ==============================
-   PRINT BUTTON
-============================== */
-
-.print-button {
-
-    width: 100%;
-
-    margin-top: 15px;
-
-    padding: 14px;
-
-    border: none;
-
-    border-radius: 12px;
-
-    background: #222;
-
-    color: white;
-
-    font-size: 15px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-}
-
-
-.print-button:hover {
-
-    opacity: 0.9;
-}
-
-
-/* ==============================
-   PRINT AREA
-============================== */
+/* =========================
+   LABEL PREVIEW
+========================= */
 
 #printArea {
 
@@ -357,10 +354,6 @@ h1 {
     border-radius: 15px;
 }
 
-
-/* ==============================
-   LABEL
-============================== */
 
 .label {
 
@@ -462,9 +455,9 @@ h1 {
 }
 
 
-/* ==============================
+/* =========================
    FOOTER
-============================== */
+========================= */
 
 .footer {
 
@@ -492,11 +485,11 @@ h1 {
 }
 
 
-/* ==============================
+/* =========================
    MOBILE
-============================== */
+========================= */
 
-@media(max-width: 650px) {
+@media(max-width:650px) {
 
     .controls {
 
@@ -534,7 +527,7 @@ h1 {
 }
 
 
-@media(max-width: 380px) {
+@media(max-width:380px) {
 
     #printArea {
 
@@ -546,9 +539,9 @@ h1 {
 }
 
 
-/* ==============================
-   PRINT SETTINGS
-============================== */
+/* =========================
+   BROWSER PRINT
+========================= */
 
 @media print {
 
@@ -566,6 +559,7 @@ h1 {
         background: white;
 
         padding: 0;
+
     }
 
 
@@ -573,15 +567,6 @@ h1 {
     .footer {
 
         display: none !important;
-
-    }
-
-
-    .container {
-
-        max-width: none;
-
-        width: 100%;
 
     }
 
@@ -597,8 +582,6 @@ h1 {
 
         padding: 0;
 
-        border-radius: 0;
-
     }
 
 
@@ -608,50 +591,11 @@ h1 {
             0.3mm solid
             #cccccc;
 
-        border-radius: 1mm;
-
         min-height: 38mm;
-
-        padding: 2mm;
 
         break-inside: avoid;
 
         page-break-inside: avoid;
-
-    }
-
-
-    .label-brand {
-
-        font-size: 9pt;
-
-    }
-
-
-    .label-product {
-
-        font-size: 6pt;
-
-    }
-
-
-    .label-serial {
-
-        font-size: 7pt;
-
-    }
-
-
-    .label-verify {
-
-        font-size: 5pt;
-
-    }
-
-
-    .barcode-svg {
-
-        max-width: 48mm;
 
     }
 
@@ -668,10 +612,6 @@ h1 {
 <div class="container">
 
 
-<!-- ==============================
-     CONTROL PANEL
-============================== -->
-
 <section class="control-card">
 
 
@@ -685,8 +625,7 @@ KUU SPA+ Batch Barcode Labels
 
 <p class="subtitle">
 
-Generate and print Code 128 barcode labels
-for your product serial numbers.
+Production-ready Code 128 barcode label generator
 
 </p>
 
@@ -732,7 +671,6 @@ value="100"
 
 <button
 class="generate-button"
-type="button"
 onclick="generateLabels()"
 >
 Generate Barcode Labels
@@ -820,7 +758,6 @@ Select a range and generate labels.
 <button
 id="printButton"
 class="print-button"
-type="button"
 onclick="printLabels()"
 style="display:none;"
 >
@@ -828,12 +765,18 @@ style="display:none;"
 </button>
 
 
+<button
+id="pdfButton"
+class="pdf-button"
+onclick="exportPDF()"
+style="display:none;"
+>
+📄 Export PDF
+</button>
+
+
 </section>
 
-
-<!-- ==============================
-     PRINT AREA
-============================== -->
 
 <section id="printArea">
 
@@ -863,9 +806,9 @@ Powered by
 <script>
 
 
-/* ==============================
+/* =========================
    ELEMENTS
-============================== */
+========================= */
 
 const startInput =
 document.getElementById(
@@ -897,9 +840,24 @@ document.getElementById(
 );
 
 
-/* ==============================
+const pdfButton =
+document.getElementById(
+"pdfButton"
+);
+
+
+/* =========================
+   CURRENT RANGE
+========================= */
+
+let currentStart = 0;
+
+let currentEnd = 0;
+
+
+/* =========================
    QUICK RANGE
-============================== */
+========================= */
 
 function setRange(start, end) {
 
@@ -912,9 +870,9 @@ generateLabels();
 }
 
 
-/* ==============================
+/* =========================
    GENERATE LABELS
-============================== */
+========================= */
 
 function generateLabels() {
 
@@ -935,12 +893,13 @@ endInput.value,
 printArea.innerHTML = "";
 
 
-/* Reset print button */
+printButton.style.display =
+"none";
 
-printButton.style.display = "none";
 
+pdfButton.style.display =
+"none";
 
-/* Validation */
 
 if (
 Number.isNaN(start) ||
@@ -999,12 +958,16 @@ const total =
 end - start + 1;
 
 
-/* Safety limit */
+/*
+Maximum 500 labels per
+generation for Android
+browser performance.
+*/
 
 if (total > 500) {
 
 showMessage(
-"Please print a maximum of 500 labels at a time."
+"Please generate a maximum of 500 labels at a time."
 );
 
 return;
@@ -1012,7 +975,10 @@ return;
 }
 
 
-/* Show progress */
+currentStart = start;
+
+currentEnd = end;
+
 
 showMessage(
 "Generating " +
@@ -1020,8 +986,6 @@ total +
 " barcode labels..."
 );
 
-
-/* Generate */
 
 for (
 let number = start;
@@ -1040,8 +1004,6 @@ createLabel(serial);
 }
 
 
-/* Complete */
-
 showMessage(
 "✅ " +
 total +
@@ -1049,17 +1011,19 @@ total +
 );
 
 
-/* Show print button */
-
 printButton.style.display =
+"block";
+
+
+pdfButton.style.display =
 "block";
 
 }
 
 
-/* ==============================
+/* =========================
    CREATE LABEL
-============================== */
+========================= */
 
 function createLabel(serial) {
 
@@ -1171,8 +1135,6 @@ label
 );
 
 
-/* Generate Code 128 */
-
 try {
 
 JsBarcode(
@@ -1188,14 +1150,14 @@ height: 45,
 
 displayValue: false,
 
-margin: 3,
-
-lineColor: "#000000"
+margin: 3
 
 }
 );
 
-} catch (error) {
+}
+
+catch(error) {
 
 console.error(
 "Barcode error:",
@@ -1203,19 +1165,14 @@ serial,
 error
 );
 
-
-label.innerHTML =
-"<strong>Barcode error</strong><br>" +
-serial;
-
 }
 
 }
 
 
-/* ==============================
+/* =========================
    MESSAGE
-============================== */
+========================= */
 
 function showMessage(text) {
 
@@ -1225,14 +1182,14 @@ text;
 }
 
 
-/* ==============================
-   PRINT LABELS
-============================== */
+/* =========================
+   NORMAL PRINT
+========================= */
 
 function printLabels() {
 
 if (
-printArea.children.length === 0
+currentStart === 0
 ) {
 
 showMessage(
@@ -1249,9 +1206,397 @@ window.print();
 }
 
 
+/* =========================
+   EXPORT PDF
+========================= */
+
+async function exportPDF() {
+
+if (
+currentStart === 0
+) {
+
+showMessage(
+"Please generate barcode labels first."
+);
+
+return;
+
+}
+
+
+if (
+typeof window.jspdf ===
+"undefined"
+) {
+
+showMessage(
+"❌ PDF library could not load. Please check your internet connection and try again."
+);
+
+return;
+
+}
+
+
+const total =
+currentEnd -
+currentStart +
+1;
+
+
+showMessage(
+"Preparing PDF for " +
+total +
+" labels..."
+);
+
+
+try {
+
+
+const {
+jsPDF
+} = window.jspdf;
+
+
+const pdf =
+new jsPDF(
+{
+orientation: "portrait",
+unit: "mm",
+format: "a4"
+}
+);
+
+
+/*
+A4 dimensions:
+210mm x 297mm
+*/
+
+const pageWidth = 210;
+
+const pageHeight = 297;
+
+
+/*
+Three columns.
+*/
+
+const columns = 3;
+
+
+/*
+Four rows.
+*/
+
+const rows = 6;
+
+
+const marginX = 8;
+
+const marginY = 8;
+
+const gapX = 3;
+
+const gapY = 3;
+
+
+const labelWidth =
+(
+pageWidth -
+marginX * 2 -
+gapX * (columns - 1)
+) / columns;
+
+
+const labelHeight =
+(
+pageHeight -
+marginY * 2 -
+gapY * (rows - 1)
+) / rows;
+
+
+let labelIndex = 0;
+
+
+/*
+Generate every serial.
+*/
+
+for (
+let number = currentStart;
+number <= currentEnd;
+number++
+) {
+
+
+if (
+labelIndex > 0 &&
+labelIndex %
+(columns * rows) === 0
+) {
+
+pdf.addPage();
+
+}
+
+
+const position =
+labelIndex %
+(columns * rows);
+
+
+const column =
+position % columns;
+
+
+const row =
+Math.floor(
+position / columns
+);
+
+
+const x =
+marginX +
+column *
+(labelWidth + gapX);
+
+
+const y =
+marginY +
+row *
+(labelHeight + gapY);
+
+
+const serial =
+"KSP-B1-" +
+String(number)
+.padStart(6, "0");
+
+
+/*
+Label border
+*/
+
+pdf.setDrawColor(
+210,
+210,
+210
+);
+
+pdf.rect(
+x,
+y,
+labelWidth,
+labelHeight
+);
+
+
+/*
+Brand
+*/
+
+pdf.setFont(
+"helvetica",
+"bold"
+);
+
+pdf.setFontSize(
+9
+);
+
+pdf.text(
+"KUU SPA+",
+x + labelWidth / 2,
+y + 6,
+{
+align: "center"
+}
+);
+
+
+/*
+Product
+*/
+
+pdf.setFont(
+"helvetica",
+"normal"
+);
+
+pdf.setFontSize(
+6
+);
+
+pdf.text(
+"Turmeric Whitening Serum",
+x + labelWidth / 2,
+y + 10,
+{
+align: "center"
+}
+);
+
+
+/*
+Create temporary canvas
+for Code 128 barcode.
+*/
+
+const canvas =
+document.createElement(
+"canvas"
+);
+
+
+JsBarcode(
+canvas,
+serial,
+{
+
+format: "CODE128",
+
+width: 2,
+
+height: 50,
+
+displayValue: false,
+
+margin: 0
+
+}
+);
+
+
+/*
+Barcode dimensions
+*/
+
+const barcodeWidth =
+labelWidth - 8;
+
+
+const barcodeHeight =
+18;
+
+
+/*
+Add barcode image
+*/
+
+pdf.addImage(
+canvas.toDataURL(
+"image/png"
+),
+"PNG",
+x + 4,
+y + 13,
+barcodeWidth,
+barcodeHeight
+);
+
+
+/*
+Serial number
+*/
+
+pdf.setFont(
+"helvetica",
+"bold"
+);
+
+pdf.setFontSize(
+7
+);
+
+pdf.text(
+serial,
+x + labelWidth / 2,
+y + 35,
+{
+align: "center"
+}
+);
+
+
+/*
+Verification text
+*/
+
+pdf.setFont(
+"helvetica",
+"normal"
+);
+
+pdf.setFontSize(
+5
+);
+
+pdf.text(
+"Scan to verify authenticity",
+x + labelWidth / 2,
+y + 40,
+{
+align: "center"
+}
+);
+
+
+labelIndex++;
+
+}
+
+
+/*
+Filename
+*/
+
+const filename =
+"KUU-SPA-B1-Labels-" +
+String(currentStart)
+.padStart(6, "0") +
+"-" +
+String(currentEnd)
+.padStart(6, "0") +
+".pdf";
+
+
+pdf.save(
+filename
+);
+
+
+showMessage(
+"✅ PDF created successfully: " +
+filename
+);
+
+
+}
+
+catch(error) {
+
+console.error(
+"PDF error:",
+error
+);
+
+
+showMessage(
+"❌ PDF creation failed. Please try again."
+);
+
+}
+
+}
+
+
 </script>
 
 
 </body>
 
-</html>
+    </html>
