@@ -1,133 +1,1085 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KUU SPA+ Batch B1 Barcode Labels</title>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-<style>
-body{
-    font-family:Arial,sans-serif;
-    background:#f5f5f5;
-    margin:20px;
-}
+<title>KUU SPA+ Batch Barcode Labels</title>
 
-h1{
-    text-align:center;
-    color:#b8860b;
-}
+<meta
+    name="description"
+    content="KUU SPA+ batch barcode label printing system."
+>
 
-#labels{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-    gap:20px;
-}
+<meta
+    name="theme-color"
+    content="#b8860b"
+>
 
-.label{
-    background:#fff;
-    border:1px solid #ccc;
-    border-radius:10px;
-    padding:15px;
-    text-align:center;
-    page-break-inside:avoid;
-}
 
-.brand{
-    font-size:18px;
-    font-weight:bold;
-    color:#b8860b;
-}
+<!-- Code 128 Barcode Library -->
 
-.serial{
-    margin-top:10px;
-    font-weight:bold;
-}
-
-button{
-    background:#b8860b;
-    color:white;
-    border:none;
-    padding:12px 24px;
-    font-size:18px;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-button:hover{
-    background:#8f6700;
-}
-
-@media print{
-    body{
-        background:white;
-    }
-
-    .label{
-        box-shadow:none;
-    }
-
-    button{
-        display:none;
-    }
-}
-</style>
-
-</head>
-
-<body>
-
-<h1>KUU SPA+ Batch B1 Barcode Labels</h1>
-
-<div style="text-align:center;margin:20px 0;">
-    <button onclick="window.print()">🖨️ Print Labels</button>
-</div>
-
-<div id="labels"></div>
-
-<script>
-
-fetch("batch1_serials.json")
-.then(response => response.json())
-.then(serials => {
-
-    const container = document.getElementById("labels");
-
-    serials.forEach((serial, index) => {
-
-        const label = document.createElement("div");
-        label.className = "label";
-
-        label.innerHTML = `
-            <div class="brand">KUU SPA+</div>
-            <svg id="barcode${index}"></svg>
-            <div class="serial">${serial}</div>
-            <div style="font-size:12px;margin-top:8px;">
-                Scan to verify authenticity
-            </div>
-        `;
-
-        container.appendChild(label);
-
-        JsBarcode(`#barcode${index}`, serial, {
-            format: "CODE128",
-            displayValue: false,
-            height: 60,
-            width: 2,
-            margin: 10
-        });
-
-    });
-
-})
-.catch(error => {
-    document.getElementById("labels").innerHTML =
-        "<h2 style='color:red'>Failed to load serial numbers.</h2>";
-    console.error(error);
-});
-
+<script
+    src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js">
 </script>
 
-</body>
-</html>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+
+    body {
+
+        min-height: 100vh;
+
+        font-family:
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            Roboto,
+            Arial,
+            sans-serif;
+
+        background:
+            linear-gradient(
+                135deg,
+                #fffdf5,
+                #f4e7c2
+            );
+
+        color: #222;
+
+        padding: 20px;
+    }
+
+
+    .container {
+
+        width: 100%;
+
+        max-width: 900px;
+
+        margin: auto;
+    }
+
+
+    .control-card {
+
+        background: white;
+
+        border-radius: 24px;
+
+        padding: 28px;
+
+        box-shadow:
+            0 20px 50px
+            rgba(70, 50, 10, 0.15);
+
+        border:
+            1px solid
+            rgba(184, 134, 11, 0.15);
+
+        margin-bottom: 25px;
+    }
+
+
+    .top-line {
+
+        width: 100%;
+
+        height: 4px;
+
+        border-radius: 10px;
+
+        margin-bottom: 25px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #8f6700,
+                #d4af37,
+                #f2d675,
+                #b8860b
+            );
+    }
+
+
+    h1 {
+
+        text-align: center;
+
+        color: #9a7100;
+
+        font-size: 28px;
+
+        margin-bottom: 8px;
+    }
+
+
+    .subtitle {
+
+        text-align: center;
+
+        color: #777;
+
+        font-size: 14px;
+
+        line-height: 1.6;
+
+        margin-bottom: 25px;
+    }
+
+
+    .controls {
+
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 15px;
+    }
+
+
+    .field label {
+
+        display: block;
+
+        font-size: 14px;
+
+        font-weight: 700;
+
+        margin-bottom: 7px;
+    }
+
+
+    .field input {
+
+        width: 100%;
+
+        padding: 14px;
+
+        border:
+            2px solid
+            #e1d7b9;
+
+        border-radius: 11px;
+
+        background: #fffdf8;
+
+        font-size: 16px;
+
+        outline: none;
+    }
+
+
+    .field input:focus {
+
+        border-color: #b8860b;
+
+        box-shadow:
+            0 0 0 4px
+            rgba(184, 134, 11, 0.10);
+    }
+
+
+    .generate-button {
+
+        width: 100%;
+
+        margin-top: 18px;
+
+        padding: 15px;
+
+        border: none;
+
+        border-radius: 12px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #b8860b,
+                #d4af37
+            );
+
+        color: white;
+
+        font-size: 16px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+    }
+
+
+    .generate-button:hover {
+
+        opacity: 0.9;
+    }
+
+
+    .quick-ranges {
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 8px;
+
+        margin-top: 18px;
+    }
+
+
+    .range-button {
+
+        padding: 9px 12px;
+
+        border:
+            1px solid
+            #d4af37;
+
+        border-radius: 9px;
+
+        background: white;
+
+        color: #8f6700;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+    }
+
+
+    .range-button:hover {
+
+        background: #fff8dc;
+    }
+
+
+    .message {
+
+        min-height: 20px;
+
+        margin-top: 15px;
+
+        text-align: center;
+
+        color: #666;
+
+        font-size: 13px;
+    }
+
+
+    /* =========================================
+       PRINT AREA
+    ========================================= */
+
+
+    #printArea {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 10px;
+
+        background: white;
+
+        padding: 15px;
+
+        border-radius: 15px;
+
+    }
+
+
+    /* =========================================
+       LABEL
+    ========================================= */
+
+
+    .label {
+
+        background: white;
+
+        border:
+            1px solid
+            #d9d9d9;
+
+        border-radius: 6px;
+
+        min-height: 135px;
+
+        padding: 8px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        text-align: center;
+
+        overflow: hidden;
+    }
+
+
+    .label-brand {
+
+        font-size: 11px;
+
+        font-weight: 800;
+
+        color: #9a7100;
+
+        margin-bottom: 4px;
+
+        letter-spacing: 0.5px;
+    }
+
+
+    .label-product {
+
+        font-size: 8px;
+
+        color: #555;
+
+        margin-bottom: 4px;
+    }
+
+
+    .barcode-svg {
+
+        width: 100%;
+
+        max-width: 180px;
+
+        height: auto;
+
+    }
+
+
+    .label-serial {
+
+        margin-top: 3px;
+
+        font-size: 10px;
+
+        font-weight: 700;
+
+        letter-spacing: 0.5px;
+
+        word-break: break-word;
+    }
+
+
+    .label-verify {
+
+        margin-top: 3px;
+
+        font-size: 7px;
+
+        color: #777;
+    }
+
+
+    .empty-message {
+
+        grid-column: 1 / -1;
+
+        padding: 40px 20px;
+
+        text-align: center;
+
+        color: #888;
+
+        font-size: 14px;
+    }
+
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+
+
+    .footer {
+
+        text-align: center;
+
+        margin-top: 25px;
+
+        padding-top: 18px;
+
+        border-top:
+            1px solid
+            #eee7d5;
+
+        color: #888;
+
+        font-size: 12px;
+
+        line-height: 1.6;
+    }
+
+
+    .footer strong {
+
+        color: #9a7100;
+    }
+
+
+    /* =========================================
+       MOBILE
+    ========================================= */
+
+
+    @media(max-width: 650px) {
+
+        .controls {
+
+            grid-template-columns:
+                1fr;
+
+        }
+
+
+        #printArea {
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 8px;
+
+            padding: 8px;
+
+        }
+
+
+        .label {
+
+            min-height: 125px;
+
+        }
+
+
+        .control-card {
+
+            padding: 22px 18px;
+
+        }
+
+    }
+
+
+    @media(max-width: 380px) {
+
+        #printArea {
+
+            grid-template-columns:
+                1fr;
+
+        }
+
+    }
+
+
+    /* =========================================
+       PRINT SETTINGS
+    ========================================= */
+
+
+    @media print {
+
+        @page {
+
+            size: A4;
+
+            margin: 8mm;
+
+        }
+
+
+        body {
+
+            background: white;
+
+            padding: 0;
+
+        }
+
+
+        .control-card,
+        .footer {
+
+            display: none !important;
+
+        }
+
+
+        .container {
+
+            max-width: none;
+
+            width: 100%;
+
+        }
+
+
+        #printArea {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 4mm;
+
+            padding: 0;
+
+            border-radius: 0;
+
+        }
+
+
+        .label {
+
+            border:
+                0.3mm solid
+                #cccccc;
+
+            border-radius: 1mm;
+
+            min-height: 38mm;
+
+            padding: 2mm;
+
+            break-inside: avoid;
+
+            page-break-inside: avoid;
+
+        }
+
+
+        .label-brand {
+
+            font-size: 9pt;
+
+        }
+
+
+        .label-product {
+
+            font-size: 6pt;
+
+        }
+
+
+        .label-serial {
+
+            font-size: 7pt;
+
+        }
+
+
+        .label-verify {
+
+            font-size: 5pt;
+
+        }
+
+
+        .barcode-svg {
+
+            max-width: 48mm;
+
+        }
+
+    }
+
+</style>
+
+</head><body><div class="container"><!-- CONTROL PANEL -->
+
+<section class="control-card">
+
+
+    <div class="top-line"></div>
+
+
+    <h1>
+        KUU SPA+ Batch Barcode Labels
+    </h1>
+
+
+    <p class="subtitle">
+
+        Generate and print Code 128 barcode labels
+        for your product serial numbers.
+
+    </p>
+
+
+    <div class="controls">
+
+
+        <div class="field">
+
+            <label for="startNumber">
+                Start Number
+            </label>
+
+            <input
+                id="startNumber"
+                type="number"
+                min="1"
+                max="2000"
+                value="1"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label for="endNumber">
+                End Number
+            </label>
+
+            <input
+                id="endNumber"
+                type="number"
+                min="1"
+                max="2000"
+                value="100"
+            >
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="generate-button"
+        type="button"
+        onclick="generateLabels()"
+    >
+        Generate Barcode Labels
+    </button>
+
+
+    <div class="quick-ranges">
+
+        <button
+            class="range-button"
+            onclick="setRange(1,100)"
+        >
+            1–100
+        </button>
+
+
+        <button
+            class="range-button"
+            onclick="setRange(101,200)"
+        >
+            101–200
+        </button>
+
+
+        <button
+            class="range-button"
+            onclick="setRange(201,300)"
+        >
+            201–300
+        </button>
+
+
+        <button
+            class="range-button"
+            onclick="setRange(301,400)"
+        >
+            301–400
+        </button>
+
+
+        <button
+            class="range-button"
+            onclick="setRange(401,500)"
+        >
+            401–500
+        </button>
+
+
+        <button
+            class="range-button"
+            onclick="setRange(501,1000)"
+        >
+            501–1000
+        </button>
+
+
+        <button
+            class="range-button"
+            onclick="setRange(1001,1500)"
+        >
+            1001–1500
+        </button>
+
+
+        <button
+            class="range-button"
+            onclick="setRange(1501,2000)"
+        >
+            1501–2000
+        </button>
+
+    </div>
+
+
+    <div
+        id="message"
+        class="message"
+    >
+        Select a range and generate labels.
+    </div>
+
+
+</section>
+
+
+<!-- PRINT AREA -->
+
+<section id="printArea">
+
+    <div class="empty-message">
+
+        Your barcode labels will appear here.
+
+    </div>
+
+</section>
+
+
+<div class="footer">
+
+    KUU SPA+ Batch Barcode System<br>
+
+    Powered by
+    <strong>Daisy Creative Studio</strong>
+
+</div>
+
+</div><script>
+
+
+    const startInput =
+        document.getElementById(
+            "startNumber"
+        );
+
+
+    const endInput =
+        document.getElementById(
+            "endNumber"
+        );
+
+
+    const printArea =
+        document.getElementById(
+            "printArea"
+        );
+
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    function setRange(start, end) {
+
+        startInput.value = start;
+
+        endInput.value = end;
+
+        generateLabels();
+
+    }
+
+
+    function generateLabels() {
+
+        const start =
+            parseInt(
+                startInput.value,
+                10
+            );
+
+
+        const end =
+            parseInt(
+                endInput.value,
+                10
+            );
+
+
+        printArea.innerHTML = "";
+
+
+        /* Validation */
+
+        if (
+            Number.isNaN(start) ||
+            Number.isNaN(end)
+        ) {
+
+            showMessage(
+                "Please enter a valid start and end number."
+            );
+
+            return;
+
+        }
+
+
+        if (start < 1 || end < 1) {
+
+            showMessage(
+                "Serial numbers must start from 1."
+            );
+
+            return;
+
+        }
+
+
+        if (start > 2000 || end > 2000) {
+
+            showMessage(
+                "Batch B1 contains serial numbers 1–2000."
+            );
+
+            return;
+
+        }
+
+
+        if (start > end) {
+
+            showMessage(
+                "The start number cannot be greater than the end number."
+            );
+
+            return;
+
+        }
+
+
+        const total =
+            end - start + 1;
+
+
+        /*
+        Safety limit.
+
+        We allow up to 500 labels at one time
+        for better browser performance.
+        */
+
+        if (total > 500) {
+
+            showMessage(
+                "Please print a maximum of 500 labels at a time."
+            );
+
+            return;
+
+        }
+
+
+        showMessage(
+            "Generating " +
+            total +
+            " barcode labels..."
+        );
+
+
+        /* Generate labels */
+
+        for (
+            let number = start;
+            number <= end;
+            number++
+        ) {
+
+            const serial =
+                "KSP-B1-" +
+                String(number)
+                    .padStart(6, "0");
+
+
+            createLabel(serial);
+
+        }
+
+
+        showMessage(
+            "✅ " +
+            total +
+            " barcode labels generated. Tap your browser's Print option to print them."
+        );
+
+    }
+
+
+    function createLabel(serial) {
+
+        const label =
+            document.createElement(
+                "div"
+            );
+
+
+        label.className =
+            "label";
+
+
+        const brand =
+            document.createElement(
+                "div"
+            );
+
+
+        brand.className =
+            "label-brand";
+
+
+        brand.textContent =
+            "KUU SPA+";
+
+
+        const product =
+            document.createElement(
+                "div"
+            );
+
+
+        product.className =
+            "label-product";
+
+
+        product.textContent =
+            "Turmeric Whitening Serum";
+
+
+        const svg =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "svg"
+            );
+
+
+        svg.classList.add(
+            "barcode-svg"
+        );
+
+
+        const serialText =
+            document.createElement(
+                "div"
+            );
+
+
+        serialText.className =
+            "label-serial";
+
+
+        serialText.textContent =
+            serial;
+
+
+        const verifyText =
+            document.createElement(
+                "div"
+            );
+
+
+        verifyText.className =
+            "label-verify";
+
+
+        verifyText.textContent =
+            "Scan to verify authenticity";
+
+
+        label.appendChild(brand);
+
+        label.appendChild(product);
+
+        label.appendChild(svg);
+
+        label.appendChild(serialText);
+
+        label.appendChild(verifyText);
+
+
+        printArea.appendChild(label);
+
+
+        try {
+
+            JsBarcode(
+                svg,
+                serial,
+                {
+
+                    format: "CODE128",
+
+                    width: 1.4,
+
+                    height: 45,
+
+                    displayValue: false,
+
+                    margin: 3,
+
+                    lineColor: "#000000"
+
+                }
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Barcode error:",
+                serial,
+                error
+            );
+
+            label.innerHTML =
+                "<strong>Barcode error</strong><br>" +
+                serial;
+
+        }
+
+    }
+
+
+    function showMessage(text) {
+
+        message.textContent =
+            text;
+
+    }
+
+
+</script></body></html>
