@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KUU SPA+ Batch Management</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #fffdf5, #f4e7c2);
+    color: #222;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.card {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 18px 45px rgba(70,50,10,0.15);
+}
+
+.top-line {
+    height: 4px;
+    border-radius: 10px;
+    margin-bottom: 22px;
+
+    background: linear-gradient(
+        90deg,
+        #8f6700,
+        #d4af37,
+        #f2d675,
+        #b8860b
+    );
+}
+
+h1 {
+    text-align: center;
+    color: #9a7100;
+    margin: 0 0 8px;
+    font-size: 28px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 28px;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+.stat {
+    background: #faf7ec;
+    border: 1px solid #e5d9b8;
+    border-radius: 15px;
+    padding: 18px;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 25px;
+    font-weight: bold;
+    color: #9a7100;
+}
+
+.stat-label {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #777;
+}
+
+.section-title {
+    color: #9a7100;
+    font-size: 19px;
+    margin: 25px 0 12px;
+}
+
+.batch-card {
+    border: 1px solid #ddd4b8;
+    border-radius: 18px;
+    padding: 20px;
+    margin-top: 15px;
+    background: #fff;
+}
+
+.batch-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.batch-name {
+    font-size: 21px;
+    font-weight: bold;
+    color: #9a7100;
+}
+
+.active {
+    background: #e7f7eb;
+    color: #27834a;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.batch-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.info-box {
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.info-title {
+    display: block;
+    color: #888;
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.info-value {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.progress-area {
+    margin-top: 18px;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 6px;
+}
+
+.progress {
+    height: 10px;
+    background: #eee7d3;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #b8860b,
+        #d4af37
+    );
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.primary {
+    background: linear-gradient(
+        135deg,
+        #b8860b,
+        #d4af37
+    );
+    color: white;
+}
+
+.dark {
+    background: #222;
+    color: white;
+}
+
+.secondary {
+    background: #f4eee0;
+    color: #806000;
+    border: 1px solid #d8c99e;
+}
+
+.notice {
+    margin-top: 22px;
+    padding: 16px;
+    border-radius: 13px;
+    background: #fff8df;
+    border: 1px solid #e5cf83;
+    color: #715b17;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.future {
+    margin-top: 18px;
+    padding: 20px;
+    border: 2px dashed #d9cda9;
+    border-radius: 17px;
+    text-align: center;
+    color: #777;
+}
+
+.future-icon {
+    font-size: 30px;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 25px;
+    color: #888;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.footer strong {
+    color: #9a7100;
+}
+
+@media(max-width:650px) {
+
+    body {
+        padding: 12px;
+    }
+
+    .card {
+        padding: 20px 15px;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .batch-info {
+        grid-template-columns: 1fr;
+    }
+
+    .buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .batch-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<div class="card">
+
+
+<div class="top-line"></div>
+
+
+<h1>KUU SPA+</h1>
+
+<p class="subtitle">
+Production Batch Management Dashboard
+</p>
+
+
+<!-- DASHBOARD SUMMARY -->
+
+<div class="dashboard">
+
+
+<div class="stat">
+
+<div class="stat-number">
+1
+</div>
+
+<div class="stat-label">
+Registered Batch
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-number">
+2,000
+</div>
+
+<div class="stat-label">
+Batch 1 Serial Numbers
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-number">
+B1
+</div>
+
+<div class="stat-label">
+Current Batch
+</div>
+
+</div>
+
+
+</div>
+
+
+<h2 class="section-title">
+📦 Production Batches
+</h2>
+
+
+<!-- BATCH 1 -->
+
+<div class="batch-card">
+
+
+<div class="batch-header">
+
+<div class="batch-name">
+KUU SPA+ — Batch B1
+</div>
+
+<div class="active">
+● ACTIVE
+</div>
+
+</div>
+
+
+<div class="batch-info">
+
+
+<div class="info-box">
+
+<span class="info-title">
+Batch Code
+</span>
+
+<span class="info-value">
+KSP-B1
+</span>
+
+</div>
+
+
+<div class="info-box">
+
+<span class="info-title">
+First Serial
+</span>
+
+<span class="info-value">
+KSP-B1-000001
+</span>
+
+</div>
+
+
+<div class="info-box">
+
+<span class="info-title">
+Last Serial
+</span>
+
+<span class="info-value">
+KSP-B1-002000
+</span>
+
+</div>
+
+
+<div class="info-box">
+
+<span class="info-title">
+Quantity
+</span>
+
+<span class="info-value">
+2,000 Bottles
+</span>
+
+</div>
+
+
+<div class="info-box">
+
+<span class="info-title">
+Serial Numbers
+</span>
+
+<span class="info-value">
+2,000 Registered
+</span>
+
+</div>
+
+
+<div class="info-box">
+
+<span class="info-title">
+Database
+</span>
+
+<span class="info-value">
+batch1_serials.json
+</span>
+
+</div>
+
+
+</div>
+
+
+<div class="progress-area">
+
+<div class="progress-label">
+
+<span>
+Batch Database
+</span>
+
+<span>
+100%
+</span>
+
+</div>
+
+
+<div class="progress">
+
+<div class="progress-bar"></div>
+
+</div>
+
+</div>
+
+
+<div class="buttons">
+
+
+<button
+class="primary"
+onclick="openBarcode()"
+>
+🏷️ Batch Barcodes
+</button>
+
+
+<button
+class="dark"
+onclick="openSearch()"
+>
+🔎 Search & Reprint
+</button>
+
+
+<button
+class="secondary"
+onclick="openVerification()"
+>
+🔐 Verification Page
+</button>
+
+
+<button
+class="secondary"
+onclick="openBatchPDF()"
+>
+📄 Batch PDF
+</button>
+
+
+</div>
+
+
+</div>
+
+
+<!-- FUTURE BATCHES -->
+
+<h2 class="section-title">
+➕ Future Production Batches
+</h2>
+
+
+<div class="future">
+
+<div class="future-icon">
+📦
+</div>
+
+<strong>
+Batch B2, B3, B4...
+</strong>
+
+<p>
+Future production batches can be added to this
+dashboard while keeping previous batch records
+separate and protected.
+</p>
+
+</div>
+
+
+<div class="notice">
+
+<strong>🔐 Database Protection</strong><br>
+
+Batch B1 currently contains
+<strong>2,000 registered serial numbers</strong>.
+Only serial numbers contained in the official
+database can pass product verification or be
+used through the Search & Reprint system.
+
+</div>
+
+
+</div>
+
+
+<div class="footer">
+
+KUU SPA+ Batch Management System<br>
+
+Powered by
+<strong>Daisy Creative Studio</strong>
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+function openBarcode() {
+
+    window.location.href =
+        "batch-barcodes.html";
+
+}
+
+
+function openSearch() {
+
+    window.location.href =
+        "search-reprint.html";
+
+}
+
+
+function openVerification() {
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+function openBatchPDF() {
+
+    window.location.href =
+        "batch-barcodes.html";
+
+}
+
+
+</script>
+
+
+</body>
+
+  </html>
