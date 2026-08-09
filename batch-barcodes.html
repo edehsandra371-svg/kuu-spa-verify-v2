@@ -1,54 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>KUU SPA+ Batch Barcode Labels</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
 
 <style>
 
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
 }
 
 body {
+    margin: 0;
     min-height: 100vh;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#fffdf5,#f4e7c2);
+    background: linear-gradient(135deg, #fffdf5, #f4e7c2);
     color: #222;
     padding: 20px;
 }
 
 .container {
-    width: 100%;
     max-width: 900px;
     margin: auto;
 }
 
 .control-card {
     background: white;
-    border-radius: 24px;
-    padding: 28px;
-    box-shadow: 0 20px 50px rgba(70,50,10,0.15);
+    border-radius: 22px;
+    padding: 25px;
+    box-shadow: 0 15px 40px rgba(70,50,10,0.15);
     margin-bottom: 25px;
 }
 
 .top-line {
     height: 4px;
     border-radius: 10px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     background: linear-gradient(
         90deg,
         #8f6700,
@@ -61,15 +54,15 @@ body {
 h1 {
     text-align: center;
     color: #9a7100;
-    font-size: 28px;
-    margin-bottom: 8px;
+    font-size: 27px;
+    margin: 0 0 8px;
 }
 
 .subtitle {
     text-align: center;
     color: #777;
     font-size: 14px;
-    margin-bottom: 25px;
+    margin-bottom: 22px;
 }
 
 .controls {
@@ -80,8 +73,8 @@ h1 {
 
 .field label {
     display: block;
+    font-weight: bold;
     font-size: 14px;
-    font-weight: 700;
     margin-bottom: 7px;
 }
 
@@ -89,9 +82,12 @@ h1 {
     width: 100%;
     padding: 14px;
     border: 2px solid #e1d7b9;
-    border-radius: 11px;
-    background: #fffdf8;
+    border-radius: 10px;
     font-size: 16px;
+}
+
+button {
+    cursor: pointer;
 }
 
 .generate-button,
@@ -101,11 +97,10 @@ h1 {
     margin-top: 15px;
     padding: 15px;
     border: none;
-    border-radius: 12px;
+    border-radius: 11px;
     color: white;
     font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
+    font-weight: bold;
 }
 
 .generate-button {
@@ -117,7 +112,7 @@ h1 {
 }
 
 .pdf-button {
-    background: linear-gradient(135deg,#7b1f1f,#a83232);
+    background: #9b3030;
 }
 
 .quick-ranges {
@@ -134,7 +129,7 @@ h1 {
     background: white;
     color: #8f6700;
     font-size: 12px;
-    font-weight: 700;
+    font-weight: bold;
 }
 
 .message {
@@ -147,37 +142,38 @@ h1 {
 
 #printArea {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     background: white;
-    padding: 15px;
+    padding: 12px;
     border-radius: 15px;
 }
 
 .label {
     background: white;
-    border: 1px solid #d9d9d9;
-    border-radius: 6px;
+    border: 1px solid #d5d5d5;
+    border-radius: 5px;
     min-height: 150px;
-    padding: 8px;
+    padding: 7px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
+    overflow: hidden;
 }
 
 .label-brand {
     font-size: 11px;
-    font-weight: 800;
+    font-weight: bold;
     color: #9a7100;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
 }
 
 .label-product {
     font-size: 7px;
     color: #555;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
 }
 
 .barcode-svg {
@@ -186,21 +182,21 @@ h1 {
 }
 
 .label-serial {
-    margin-top: 3px;
+    margin-top: 2px;
     font-size: 9px;
-    font-weight: 700;
+    font-weight: bold;
 }
 
 .qr-preview {
-    width: 35px;
-    height: 35px;
-    margin-top: 4px;
+    width: 32px;
+    height: 32px;
+    margin-top: 3px;
 }
 
 .qr-preview img,
 .qr-preview canvas {
-    width: 35px !important;
-    height: 35px !important;
+    width: 32px !important;
+    height: 32px !important;
 }
 
 .label-verify {
@@ -211,8 +207,8 @@ h1 {
 
 .footer {
     text-align: center;
-    margin-top: 25px;
-    padding-top: 18px;
+    margin-top: 22px;
+    padding-top: 15px;
     border-top: 1px solid #eee7d5;
     color: #888;
     font-size: 12px;
@@ -231,13 +227,8 @@ h1 {
 
     #printArea {
         grid-template-columns: repeat(2,1fr);
-        gap: 8px;
-        padding: 8px;
     }
 
-    .control-card {
-        padding: 22px 18px;
-    }
 }
 
 @media print {
@@ -260,27 +251,27 @@ h1 {
     #printArea {
         display: grid;
         grid-template-columns: repeat(3,1fr);
-        gap: 4mm;
+        gap: 3mm;
         padding: 0;
     }
 
     .label {
         min-height: 40mm;
+        height: 40mm;
         border: 0.3mm solid #ccc;
+        padding: 2mm;
         break-inside: avoid;
         page-break-inside: avoid;
     }
+
 }
 
 </style>
-
 </head>
-
 
 <body>
 
 <div class="container">
-
 
 <section class="control-card">
 
@@ -292,52 +283,37 @@ h1 {
 Production-ready barcode and QR code label generator
 </p>
 
-
 <div class="controls">
 
 <div class="field">
-
-<label for="startNumber">
-Start Number
-</label>
+<label for="startNumber">Start Number</label>
 
 <input
 id="startNumber"
 type="number"
 min="1"
 max="2000"
-value="1"
->
-
+value="1">
 </div>
 
-
 <div class="field">
-
-<label for="endNumber">
-End Number
-</label>
+<label for="endNumber">End Number</label>
 
 <input
 id="endNumber"
 type="number"
 min="1"
 max="2000"
-value="5"
->
-
+value="5">
 </div>
 
 </div>
-
 
 <button
 class="generate-button"
-onclick="generateLabels()"
->
+onclick="generateLabels()">
 Generate Barcode Labels
 </button>
-
 
 <div class="quick-ranges">
 
@@ -375,65 +351,36 @@ Generate Barcode Labels
 
 </div>
 
-
 <div id="message" class="message">
 Select a range and generate labels.
 </div>
-
 
 <button
 id="printButton"
 class="print-button"
 onclick="printLabels()"
-style="display:none;"
->
+style="display:none;">
 🖨️ Print Labels
 </button>
-
 
 <button
 id="pdfButton"
 class="pdf-button"
 onclick="exportPDF()"
-style="display:none;"
->
+style="display:none;">
 📄 Export PDF
 </button>
 
-
 </section>
 
-
-<section id="printArea">
-
-<div class="label">
-
-<div class="label-brand">
-KUU SPA+
-</div>
-
-<div class="label-product">
-Turmeric Whitening Serum
-</div>
-
-</div>
-
-</section>
-
+<section id="printArea"></section>
 
 <div class="footer">
-
 KUU SPA+ Batch Barcode System<br>
-
-Powered by
-<strong>Daisy Creative Studio</strong>
-
+Powered by <strong>Daisy Creative Studio</strong>
 </div>
 
-
 </div>
-
-
 
 <script>
 
@@ -455,20 +402,16 @@ document.getElementById("printButton");
 const pdfButton =
 document.getElementById("pdfButton");
 
-
 const verificationURL =
 "https://edehsandra371-svg.github.io/kuu-spa-verify-v2/";
 
-
 let currentStart = 0;
-
 let currentEnd = 0;
 
 
-function setRange(start,end) {
+function setRange(start, end) {
 
     startInput.value = start;
-
     endInput.value = end;
 
     generateLabels();
@@ -479,15 +422,14 @@ function setRange(start,end) {
 function generateLabels() {
 
     const start =
-        parseInt(startInput.value,10);
+    parseInt(startInput.value, 10);
 
     const end =
-        parseInt(endInput.value,10);
+    parseInt(endInput.value, 10);
 
     printArea.innerHTML = "";
 
     printButton.style.display = "none";
-
     pdfButton.style.display = "none";
 
 
@@ -528,7 +470,7 @@ function generateLabels() {
 
 
     const total =
-        end - start + 1;
+    end - start + 1;
 
 
     if (total > 500) {
@@ -542,15 +484,7 @@ function generateLabels() {
 
 
     currentStart = start;
-
     currentEnd = end;
-
-
-    showMessage(
-        "Generating " +
-        total +
-        " labels..."
-    );
 
 
     for (
@@ -560,8 +494,8 @@ function generateLabels() {
     ) {
 
         const serial =
-            "KSP-B1-" +
-            String(number).padStart(6,"0");
+        "KSP-B1-" +
+        String(number).padStart(6, "0");
 
         createLabel(serial);
 
@@ -576,7 +510,6 @@ function generateLabels() {
 
 
     printButton.style.display = "block";
-
     pdfButton.style.display = "block";
 
 }
@@ -585,134 +518,94 @@ function generateLabels() {
 function createLabel(serial) {
 
     const label =
-        document.createElement("div");
+    document.createElement("div");
 
     label.className = "label";
 
 
     const brand =
-        document.createElement("div");
+    document.createElement("div");
 
     brand.className = "label-brand";
-
-    brand.textContent =
-        "KUU SPA+";
+    brand.textContent = "KUU SPA+";
 
 
     const product =
-        document.createElement("div");
+    document.createElement("div");
 
-    product.className =
-        "label-product";
-
+    product.className = "label-product";
     product.textContent =
-        "Turmeric Whitening Serum";
+    "Turmeric Whitening Serum";
 
 
     const svg =
-        document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "svg"
-        );
-
-    svg.classList.add(
-        "barcode-svg"
+    document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "svg"
     );
+
+    svg.classList.add("barcode-svg");
 
 
     const serialText =
-        document.createElement("div");
+    document.createElement("div");
 
-    serialText.className =
-        "label-serial";
-
-    serialText.textContent =
-        serial;
+    serialText.className = "label-serial";
+    serialText.textContent = serial;
 
 
     const qrBox =
-        document.createElement("div");
+    document.createElement("div");
 
-    qrBox.className =
-        "qr-preview";
+    qrBox.className = "qr-preview";
 
 
     const verifyText =
-        document.createElement("div");
+    document.createElement("div");
 
-    verifyText.className =
-        "label-verify";
-
+    verifyText.className = "label-verify";
     verifyText.textContent =
-        "Scan to verify authenticity";
+    "Scan to verify authenticity";
 
 
     label.appendChild(brand);
-
     label.appendChild(product);
-
     label.appendChild(svg);
-
     label.appendChild(serialText);
-
     label.appendChild(qrBox);
-
     label.appendChild(verifyText);
 
     printArea.appendChild(label);
 
 
-    try {
-
-        JsBarcode(
-            svg,
-            serial,
-            {
-                format: "CODE128",
-                width: 1.3,
-                height: 42,
-                displayValue: false,
-                margin: 2
-            }
-        );
-
-    } catch(error) {
-
-        console.error(
-            "Barcode error:",
-            error
-        );
-
-    }
+    JsBarcode(
+        svg,
+        serial,
+        {
+            format: "CODE128",
+            width: 1.3,
+            height: 38,
+            displayValue: false,
+            margin: 1
+        }
+    );
 
 
-    try {
+    new QRCode(
+        qrBox,
+        {
+            text:
+            verificationURL +
+            "?serial=" +
+            encodeURIComponent(serial),
 
-        new QRCode(
-            qrBox,
-            {
-                text:
-                    verificationURL +
-                    "?serial=" +
-                    encodeURIComponent(serial),
+            width: 32,
+            height: 32,
 
-                width: 35,
-
-                height: 35,
-
-                correctLevel:
-                    QRCode.CorrectLevel.M
-            }
-        );
-
-    } catch(error) {
-
-        console.error(
-            "QR error:",
-            error
-        );
-
-    }
+            correctLevel:
+            QRCode.CorrectLevel.M
+        }
+    );
 
 }
 
@@ -752,10 +645,7 @@ async function exportPDF() {
     }
 
 
-    if (
-        typeof window.jspdf ===
-        "undefined"
-    ) {
+    if (!window.jspdf) {
 
         showMessage(
             "❌ PDF library could not load."
@@ -772,51 +662,47 @@ async function exportPDF() {
 
     try {
 
-        const { jsPDF } =
-            window.jspdf;
+        const { jsPDF } = window.jspdf;
 
 
         const pdf =
-            new jsPDF({
-                orientation: "portrait",
-                unit: "mm",
-                format: "a4"
-            });
+        new jsPDF({
+            orientation: "portrait",
+            unit: "mm",
+            format: "a4"
+        });
 
 
         const pageWidth = 210;
-
         const pageHeight = 297;
 
 
         const columns = 3;
-
         const rows = 6;
 
 
         const marginX = 8;
-
         const marginY = 8;
 
-        const gapX = 3;
 
+        const gapX = 3;
         const gapY = 3;
 
 
         const labelWidth =
-            (
-                pageWidth -
-                marginX * 2 -
-                gapX * (columns - 1)
-            ) / columns;
+        (
+            pageWidth -
+            marginX * 2 -
+            gapX * (columns - 1)
+        ) / columns;
 
 
         const labelHeight =
-            (
-                pageHeight -
-                marginY * 2 -
-                gapY * (rows - 1)
-            ) / rows;
+        (
+            pageHeight -
+            marginY * 2 -
+            gapY * (rows - 1)
+        ) / rows;
 
 
         let labelIndex = 0;
@@ -831,8 +717,7 @@ async function exportPDF() {
 
             if (
                 labelIndex > 0 &&
-                labelIndex %
-                (columns * rows) === 0
+                labelIndex % 18 === 0
             ) {
 
                 pdf.addPage();
@@ -841,41 +726,42 @@ async function exportPDF() {
 
 
             const position =
-                labelIndex %
-                (columns * rows);
+            labelIndex % 18;
 
 
             const column =
-                position % columns;
+            position % columns;
 
 
             const row =
-                Math.floor(
-                    position / columns
-                );
+            Math.floor(position / columns);
 
 
             const x =
-                marginX +
-                column *
-                (labelWidth + gapX);
+            marginX +
+            column *
+            (labelWidth + gapX);
 
 
             const y =
-                marginY +
-                row *
-                (labelHeight + gapY);
+            marginY +
+            row *
+            (labelHeight + gapY);
 
 
             const serial =
-                "KSP-B1-" +
-                String(number).padStart(6,"0");
+            "KSP-B1-" +
+            String(number).padStart(6, "0");
 
 
-            /* Label border */
+            /*
+            LABEL BORDER
+            */
 
             pdf.setDrawColor(
-                210,210,210
+                210,
+                210,
+                210
             );
 
             pdf.rect(
@@ -886,137 +772,143 @@ async function exportPDF() {
             );
 
 
-            /* Brand */
+            /*
+            BRAND
+            */
 
             pdf.setFont(
                 "helvetica",
                 "bold"
             );
 
-            pdf.setFontSize(9);
+            pdf.setFontSize(8);
 
             pdf.text(
                 "KUU SPA+",
                 x + labelWidth / 2,
-                y + 6,
-                {align:"center"}
+                y + 5,
+                {
+                    align: "center"
+                }
             );
 
 
-            /* Product */
+            /*
+            PRODUCT
+            */
 
             pdf.setFont(
                 "helvetica",
                 "normal"
             );
 
-            pdf.setFontSize(5.5);
+            pdf.setFontSize(5);
 
             pdf.text(
                 "Turmeric Whitening Serum",
                 x + labelWidth / 2,
-                y + 10,
-                {align:"center"}
+                y + 8,
+                {
+                    align: "center"
+                }
             );
 
 
-            /* Barcode */
+            /*
+            BARCODE
+            */
 
             const barcodeCanvas =
-                document.createElement(
-                    "canvas"
-                );
+            document.createElement("canvas");
 
 
             JsBarcode(
                 barcodeCanvas,
                 serial,
                 {
-                    format:"CODE128",
-                    width:2,
-                    height:45,
-                    displayValue:false,
-                    margin:0
+                    format: "CODE128",
+                    width: 2,
+                    height: 40,
+                    displayValue: false,
+                    margin: 0
                 }
             );
 
 
             pdf.addImage(
-                barcodeCanvas.toDataURL(
-                    "image/png"
-                ),
+                barcodeCanvas.toDataURL("image/png"),
                 "PNG",
                 x + 3,
-                y + 12,
+                y + 10,
                 labelWidth - 6,
-                16
+                13
             );
 
 
-            /* Serial */
+            /*
+            SERIAL NUMBER
+            */
 
             pdf.setFont(
                 "helvetica",
                 "bold"
             );
 
-            pdf.setFontSize(7);
+            pdf.setFontSize(6.5);
 
             pdf.text(
                 serial,
                 x + labelWidth / 2,
-                y + 31,
-                {align:"center"}
+                y + 27,
+                {
+                    align: "center"
+                }
             );
 
 
-            /* QR */
+            /*
+            QR CODE
+            */
 
             const qrCanvas =
-                document.createElement(
-                    "canvas"
-                );
-
-
-            await createQRCanvas(
+            await makeQRCanvas(
                 verificationURL +
                 "?serial=" +
-                encodeURIComponent(serial),
-                qrCanvas
+                encodeURIComponent(serial)
             );
 
 
-            const qrSize = 11;
+            const qrSize = 9;
 
 
             pdf.addImage(
-                qrCanvas.toDataURL(
-                    "image/png"
-                ),
+                qrCanvas.toDataURL("image/png"),
                 "PNG",
-                x +
-                labelWidth / 2 -
-                qrSize / 2,
-                y + 33,
+                x + labelWidth / 2 - qrSize / 2,
+                y + 29,
                 qrSize,
                 qrSize
             );
 
 
-            /* Verify text */
+            /*
+            VERIFICATION TEXT
+            */
 
             pdf.setFont(
                 "helvetica",
                 "normal"
             );
 
-            pdf.setFontSize(4.5);
+            pdf.setFontSize(4);
 
             pdf.text(
                 "Scan to verify authenticity",
                 x + labelWidth / 2,
-                y + 47,
-                {align:"center"}
+                y + 39.5,
+                {
+                    align: "center"
+                }
             );
 
 
@@ -1026,11 +918,11 @@ async function exportPDF() {
 
 
         const filename =
-            "KUU-SPA-B1-QR-Labels-" +
-            String(currentStart).padStart(6,"0") +
-            "-" +
-            String(currentEnd).padStart(6,"0") +
-            ".pdf";
+        "KUU-SPA-B1-QR-Labels-" +
+        String(currentStart).padStart(6, "0") +
+        "-" +
+        String(currentEnd).padStart(6, "0") +
+        ".pdf";
 
 
         pdf.save(filename);
@@ -1044,10 +936,7 @@ async function exportPDF() {
 
     } catch(error) {
 
-        console.error(
-            "PDF error:",
-            error
-        );
+        console.error(error);
 
         showMessage(
             "❌ PDF creation failed. Please try again."
@@ -1058,30 +947,20 @@ async function exportPDF() {
 }
 
 
-/*
-Create a QR code on a temporary
-canvas using the QRCode library.
-*/
-
-function createQRCanvas(
-    text,
-    canvas
-) {
+function makeQRCanvas(text) {
 
     return new Promise(
-        function(resolve,reject) {
+        function(resolve, reject) {
 
             const holder =
-                document.createElement(
-                    "div"
-                );
+            document.createElement("div");
 
 
             holder.style.position =
-                "absolute";
+            "absolute";
 
             holder.style.left =
-                "-9999px";
+            "-9999px";
 
 
             document.body.appendChild(
@@ -1094,11 +973,11 @@ function createQRCanvas(
                 new QRCode(
                     holder,
                     {
-                        text:text,
-                        width:100,
-                        height:100,
+                        text: text,
+                        width: 100,
+                        height: 100,
                         correctLevel:
-                            QRCode.CorrectLevel.M
+                        QRCode.CorrectLevel.M
                     }
                 );
 
@@ -1106,40 +985,43 @@ function createQRCanvas(
                 setTimeout(
                     function() {
 
-                        const source =
-                            holder.querySelector(
-                                "canvas"
-                            );
+                        const canvas =
+                        holder.querySelector(
+                            "canvas"
+                        );
 
 
-                        if (!source) {
+                        if (!canvas) {
 
                             holder.remove();
 
                             reject(
-                                "QR canvas not created"
+                                "QR code failed"
                             );
 
                             return;
-
                         }
 
 
-                        canvas.width =
-                            source.width;
+                        const copy =
+                        document.createElement(
+                            "canvas"
+                        );
 
-                        canvas.height =
-                            source.height;
+
+                        copy.width =
+                        canvas.width;
+
+                        copy.height =
+                        canvas.height;
 
 
                         const context =
-                            canvas.getContext(
-                                "2d"
-                            );
+                        copy.getContext("2d");
 
 
                         context.drawImage(
-                            source,
+                            canvas,
                             0,
                             0
                         );
@@ -1147,7 +1029,7 @@ function createQRCanvas(
 
                         holder.remove();
 
-                        resolve();
+                        resolve(copy);
 
                     },
                     100
@@ -1170,4 +1052,4 @@ function createQRCanvas(
 </script>
 
 </body>
-</html>
+    </html>
