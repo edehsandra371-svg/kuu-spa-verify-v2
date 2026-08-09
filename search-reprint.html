@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KUU SPA+ Search & Reprint</title>
+
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#fffdf5,#f4e7c2);
+    color: #222;
+    padding: 20px;
+}
+
+.container {
+    max-width: 650px;
+    margin: auto;
+}
+
+.card {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 18px 45px rgba(70,50,10,0.15);
+}
+
+.top-line {
+    height: 4px;
+    border-radius: 10px;
+    margin-bottom: 22px;
+    background: linear-gradient(
+        90deg,
+        #8f6700,
+        #d4af37,
+        #f2d675,
+        #b8860b
+    );
+}
+
+h1 {
+    text-align: center;
+    color: #9a7100;
+    margin: 0 0 8px;
+    font-size: 28px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #dfd4b4;
+    border-radius: 11px;
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #b8860b;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 14px;
+    border: none;
+    border-radius: 11px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.search-button {
+    background: linear-gradient(
+        135deg,
+        #b8860b,
+        #d4af37
+    );
+    color: white;
+}
+
+.reprint-button {
+    background: #222;
+    color: white;
+}
+
+.pdf-button {
+    background: #8f2d2d;
+    color: white;
+}
+
+.message {
+    text-align: center;
+    margin-top: 15px;
+    color: #777;
+    font-size: 13px;
+}
+
+.result {
+    margin-top: 22px;
+}
+
+.success {
+    padding: 22px;
+    border-radius: 16px;
+    background: #eaf8ee;
+    border: 2px solid #3b9b5f;
+}
+
+.error {
+    padding: 22px;
+    border-radius: 16px;
+    background: #fff0f0;
+    border: 2px solid #c73737;
+}
+
+.badge {
+    text-align: center;
+    font-size: 38px;
+}
+
+.result h2 {
+    text-align: center;
+    margin: 8px 0 18px;
+}
+
+.info {
+    background: white;
+    padding: 13px;
+    border-radius: 9px;
+    margin-top: 8px;
+}
+
+.info strong {
+    display: block;
+    color: #777;
+    font-size: 12px;
+    margin-bottom: 3px;
+}
+
+.info span {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.barcode-area {
+    margin-top: 20px;
+    text-align: center;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.barcode-area svg {
+    max-width: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 25px;
+    color: #888;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.footer strong {
+    color: #9a7100;
+}
+
+@media(max-width:500px) {
+
+    .card {
+        padding: 22px 17px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<div class="card">
+
+
+<div class="top-line"></div>
+
+
+<h1>KUU SPA+</h1>
+
+
+<p class="subtitle">
+Search & Reprint Product Labels
+</p>
+
+
+<label for="serialInput">
+Product Serial Number
+</label>
+
+
+<input
+id="serialInput"
+type="text"
+placeholder="Example: KSP-B1-000157"
+autocomplete="off"
+>
+
+
+<button
+class="search-button"
+onclick="searchSerial()"
+>
+🔎 Search Serial Number
+</button>
+
+
+<div id="message" class="message">
+Enter a Batch B1 serial number to begin.
+</div>
+
+
+<div id="result" class="result"></div>
+
+
+</div>
+
+
+<div class="footer">
+
+KUU SPA+ Search & Reprint System<br>
+
+Powered by
+<strong>Daisy Creative Studio</strong>
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+let serialDatabase = [];
+
+let selectedSerial = "";
+
+
+/*
+LOAD BATCH 1 DATABASE
+*/
+
+fetch("batch1_serials.json")
+
+.then(function(response) {
+
+    if (!response.ok) {
+        throw new Error("Database could not be loaded.");
+    }
+
+    return response.json();
+
+})
+
+.then(function(data) {
+
+    serialDatabase = data;
+
+    document.getElementById("message").textContent =
+        "✅ Verification database ready.";
+
+})
+
+.catch(function(error) {
+
+    document.getElementById("message").textContent =
+        "❌ Database loading error.";
+
+    console.error(error);
+
+});
+
+
+
+/*
+SEARCH SERIAL
+*/
+
+function searchSerial() {
+
+    const input =
+        document.getElementById("serialInput");
+
+    const result =
+        document.getElementById("result");
+
+
+    const code =
+        input.value
+        .trim()
+        .toUpperCase();
+
+
+    result.innerHTML = "";
+
+
+    if (!code) {
+
+        document.getElementById("message").textContent =
+            "Please enter a serial number.";
+
+        return;
+
+    }
+
+
+    const exists =
+        serialDatabase.includes(code);
+
+
+    if (!exists) {
+
+        selectedSerial = "";
+
+        document.getElementById("message").textContent =
+            "❌ Serial number not found.";
+
+
+        result.innerHTML = `
+
+        <div class="error">
+
+            <div class="badge">❌</div>
+
+            <h2>INVALID SERIAL NUMBER</h2>
+
+            <p>
+            The serial number entered was not found
+            in the official KUU SPA+ database.
+            </p>
+
+            <div class="info">
+
+                <strong>Serial Entered</strong>
+
+                <span>${escapeHTML(code)}</span>
+
+            </div>
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    selectedSerial = code;
+
+
+    const parts =
+        code.split("-");
+
+
+    const batch =
+        parts.length >= 2
+        ? parts[1]
+        : "B1";
+
+
+    document.getElementById("message").textContent =
+        "✅ Serial number found.";
+
+
+    result.innerHTML = `
+
+    <div class="success">
+
+        <div class="badge">✅</div>
+
+        <h2>PRODUCT FOUND</h2>
+
+
+        <div class="info">
+
+            <strong>Product</strong>
+
+            <span>
+            KUU SPA+ Turmeric Whitening Serum
+            </span>
+
+        </div>
+
+
+        <div class="info">
+
+            <strong>Serial Number</strong>
+
+            <span>
+            ${escapeHTML(code)}
+            </span>
+
+        </div>
+
+
+        <div class="info">
+
+            <strong>Batch</strong>
+
+            <span>
+            ${escapeHTML(batch)}
+            </span>
+
+        </div>
+
+
+        <div class="barcode-area">
+
+            <svg id="reprintBarcode"></svg>
+
+        </div>
+
+
+        <button
+        class="reprint-button"
+        onclick="reprintLabel()"
+        >
+        🖨️ Reprint Label
+        </button>
+
+
+        <button
+        class="pdf-button"
+        onclick="downloadLabelPDF()"
+        >
+        📄 Download Label PDF
+        </button>
+
+    </div>
+
+    `;
+
+
+    JsBarcode(
+        "#reprintBarcode",
+        code,
+        {
+            format: "CODE128",
+            width: 2,
+            height: 60,
+            displayValue: true,
+            fontSize: 14,
+            margin: 8
+        }
+    );
+
+}
+
+
+
+/*
+REPRINT
+*/
+
+function reprintLabel() {
+
+    if (!selectedSerial) {
+
+        return;
+
+    }
+
+
+    const printWindow =
+        window.open("", "_blank");
+
+
+    if (!printWindow) {
+
+        alert(
+            "Please allow pop-ups to print the label."
+        );
+
+        return;
+
+    }
+
+
+    const barcodeSVG =
+        document.getElementById(
+            "reprintBarcode"
+        ).outerHTML;
+
+
+    printWindow.document.write(`
+
+    <!DOCTYPE html>
+
+    <html>
+
+    <head>
+
+        <title>
+        KUU SPA+ Label
+        </title>
+
+        <style>
+
+        @page {
+            size: 70mm 40mm;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            width: 70mm;
+            height: 40mm;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .label {
+            width: 66mm;
+            height: 36mm;
+            padding: 2mm;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .brand {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 1mm;
+        }
+
+        .product {
+            font-size: 7px;
+            margin-bottom: 1mm;
+        }
+
+        svg {
+            width: 58mm;
+            height: 14mm;
+        }
+
+        .serial {
+            font-size: 8px;
+            font-weight: bold;
+            margin-top: 1mm;
+        }
+
+        .verify {
+            font-size: 6px;
+            margin-top: 1mm;
+        }
+
+        </style>
+
+    </head>
+
+
+    <body onload="window.print()">
+
+        <div class="label">
+
+            <div class="brand">
+            KUU SPA+
+            </div>
+
+            <div class="product">
+            Turmeric Whitening Serum
+            </div>
+
+            ${barcodeSVG}
+
+            <div class="serial">
+            ${escapeHTML(selectedSerial)}
+            </div>
+
+            <div class="verify">
+            Scan to verify authenticity
+            </div>
+
+        </div>
+
+    </body>
+
+    </html>
+
+    `);
+
+
+    printWindow.document.close();
+
+}
+
+
+
+/*
+DOWNLOAD SINGLE LABEL AS PDF
+*/
+
+async function downloadLabelPDF() {
+
+    if (!selectedSerial) {
+
+        return;
+
+    }
+
+
+    if (!window.jspdf) {
+
+        alert(
+            "PDF library is not available."
+        );
+
+        return;
+
+    }
+
+
+    const { jsPDF } =
+        window.jspdf;
+
+
+    const pdf =
+        new jsPDF({
+            orientation: "landscape",
+            unit: "mm",
+            format: [70,40]
+        });
+
+
+    const x = 3;
+
+    const y = 3;
+
+
+    pdf.setFont(
+        "helvetica",
+        "bold"
+    );
+
+    pdf.setFontSize(12);
+
+
+    pdf.text(
+        "KUU SPA+",
+        35,
+        7,
+        {
+            align: "center"
+        }
+    );
+
+
+    pdf.setFont(
+        "helvetica",
+        "normal"
+    );
+
+    pdf.setFontSize(7);
+
+
+    pdf.text(
+        "Turmeric Whitening Serum",
+        35,
+        11,
+        {
+            align: "center"
+        }
+    );
+
+
+    const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+
+    JsBarcode(
+        canvas,
+        selectedSerial,
+        {
+            format: "CODE128",
+            width: 2,
+            height: 45,
+            displayValue: false,
+            margin: 0
+        }
+    );
+
+
+    pdf.addImage(
+        canvas.toDataURL("image/png"),
+        "PNG",
+        7,
+        13,
+        56,
+        12
+    );
+
+
+    pdf.setFont(
+        "helvetica",
+        "bold"
+    );
+
+    pdf.setFontSize(8);
+
+
+    pdf.text(
+        selectedSerial,
+        35,
+        28,
+        {
+            align: "center"
+        }
+    );
+
+
+    pdf.setFont(
+        "helvetica",
+        "normal"
+    );
+
+    pdf.setFontSize(6);
+
+
+    pdf.text(
+        "Scan to verify authenticity",
+        35,
+        34,
+        {
+            align: "center"
+        }
+    );
+
+
+    pdf.save(
+        "KUU-SPA-" +
+        selectedSerial +
+        "-LABEL.pdf"
+    );
+
+}
+
+
+
+/*
+SAFETY FUNCTION
+*/
+
+function escapeHTML(value) {
+
+    return value
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+
+/*
+ENTER KEY SEARCH
+*/
+
+document
+.getElementById("serialInput")
+.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            searchSerial();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+  </html>
