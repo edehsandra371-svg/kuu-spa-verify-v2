@@ -1,35 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>KUU SPA+ Batch Barcode Labels</title>
 
-<meta
-    name="description"
-    content="KUU SPA+ production barcode label system."
->
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<!-- Code 128 Barcode Library -->
-
-<script
-    src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js">
-</script>
-
-
-<!-- PDF Library -->
-
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 
 <style>
@@ -40,565 +23,253 @@
     padding: 0;
 }
 
-
 body {
-
     min-height: 100vh;
-
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Arial,
-        sans-serif;
-
-    background:
-        linear-gradient(
-            135deg,
-            #fffdf5,
-            #f4e7c2
-        );
-
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#fffdf5,#f4e7c2);
     color: #222;
-
     padding: 20px;
 }
 
-
 .container {
-
     width: 100%;
-
     max-width: 900px;
-
     margin: auto;
 }
 
-
-/* =========================
-   CONTROL PANEL
-========================= */
-
 .control-card {
-
     background: white;
-
     border-radius: 24px;
-
     padding: 28px;
-
-    box-shadow:
-        0 20px 50px
-        rgba(70, 50, 10, 0.15);
-
-    border:
-        1px solid
-        rgba(184, 134, 11, 0.15);
-
+    box-shadow: 0 20px 50px rgba(70,50,10,0.15);
     margin-bottom: 25px;
 }
-
 
 .top-line {
-
-    width: 100%;
-
     height: 4px;
-
     border-radius: 10px;
-
     margin-bottom: 25px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #8f6700,
-            #d4af37,
-            #f2d675,
-            #b8860b
-        );
+    background: linear-gradient(
+        90deg,
+        #8f6700,
+        #d4af37,
+        #f2d675,
+        #b8860b
+    );
 }
 
-
 h1 {
-
     text-align: center;
-
     color: #9a7100;
-
     font-size: 28px;
-
     margin-bottom: 8px;
 }
 
-
 .subtitle {
-
     text-align: center;
-
     color: #777;
-
     font-size: 14px;
-
-    line-height: 1.6;
-
     margin-bottom: 25px;
 }
 
-
-/* =========================
-   INPUTS
-========================= */
-
 .controls {
-
     display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
+    grid-template-columns: 1fr 1fr;
     gap: 15px;
 }
 
-
 .field label {
-
     display: block;
-
     font-size: 14px;
-
     font-weight: 700;
-
     margin-bottom: 7px;
 }
 
-
 .field input {
-
     width: 100%;
-
     padding: 14px;
-
-    border:
-        2px solid
-        #e1d7b9;
-
+    border: 2px solid #e1d7b9;
     border-radius: 11px;
-
     background: #fffdf8;
-
     font-size: 16px;
-
-    outline: none;
 }
-
-
-.field input:focus {
-
-    border-color: #b8860b;
-
-    box-shadow:
-        0 0 0 4px
-        rgba(184, 134, 11, 0.10);
-}
-
-
-/* =========================
-   BUTTONS
-========================= */
 
 .generate-button,
 .print-button,
 .pdf-button {
-
     width: 100%;
-
     margin-top: 15px;
-
     padding: 15px;
-
     border: none;
-
     border-radius: 12px;
-
     color: white;
-
     font-size: 15px;
-
     font-weight: 700;
-
     cursor: pointer;
 }
 
-
 .generate-button {
-
-    margin-top: 18px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #b8860b,
-            #d4af37
-        );
+    background: linear-gradient(135deg,#b8860b,#d4af37);
 }
 
-
 .print-button {
-
     background: #222;
 }
 
-
 .pdf-button {
-
-    background:
-        linear-gradient(
-            135deg,
-            #7b1f1f,
-            #a83232
-        );
+    background: linear-gradient(135deg,#7b1f1f,#a83232);
 }
-
-
-.generate-button:hover,
-.print-button:hover,
-.pdf-button:hover {
-
-    opacity: 0.9;
-}
-
-
-/* =========================
-   QUICK RANGES
-========================= */
 
 .quick-ranges {
-
     display: flex;
-
     flex-wrap: wrap;
-
     gap: 8px;
-
     margin-top: 18px;
 }
 
-
 .range-button {
-
     padding: 9px 12px;
-
-    border:
-        1px solid
-        #d4af37;
-
+    border: 1px solid #d4af37;
     border-radius: 9px;
-
     background: white;
-
     color: #8f6700;
-
     font-size: 12px;
-
     font-weight: 700;
-
-    cursor: pointer;
 }
-
-
-.range-button:hover {
-
-    background: #fff8dc;
-}
-
-
-/* =========================
-   STATUS
-========================= */
 
 .message {
-
     min-height: 20px;
-
     margin-top: 15px;
-
     text-align: center;
-
     color: #666;
-
     font-size: 13px;
-
-    line-height: 1.5;
 }
 
-
-/* =========================
-   LABEL PREVIEW
-========================= */
-
 #printArea {
-
     display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
+    grid-template-columns: repeat(3,1fr);
     gap: 10px;
-
     background: white;
-
     padding: 15px;
-
     border-radius: 15px;
 }
 
-
 .label {
-
     background: white;
-
-    border:
-        1px solid
-        #d9d9d9;
-
+    border: 1px solid #d9d9d9;
     border-radius: 6px;
-
-    min-height: 135px;
-
+    min-height: 150px;
     padding: 8px;
-
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
     justify-content: center;
-
     text-align: center;
-
-    overflow: hidden;
 }
-
 
 .label-brand {
-
     font-size: 11px;
-
     font-weight: 800;
-
     color: #9a7100;
-
-    margin-bottom: 4px;
-
-    letter-spacing: 0.5px;
+    margin-bottom: 3px;
 }
-
 
 .label-product {
-
-    font-size: 8px;
-
+    font-size: 7px;
     color: #555;
-
-    margin-bottom: 4px;
+    margin-bottom: 3px;
 }
-
 
 .barcode-svg {
-
     width: 100%;
-
-    max-width: 180px;
-
-    height: auto;
+    max-width: 175px;
 }
-
 
 .label-serial {
-
     margin-top: 3px;
-
-    font-size: 10px;
-
+    font-size: 9px;
     font-weight: 700;
-
-    letter-spacing: 0.5px;
-
-    word-break: break-word;
 }
 
+.qr-preview {
+    width: 35px;
+    height: 35px;
+    margin-top: 4px;
+}
+
+.qr-preview img,
+.qr-preview canvas {
+    width: 35px !important;
+    height: 35px !important;
+}
 
 .label-verify {
-
-    margin-top: 3px;
-
-    font-size: 7px;
-
+    margin-top: 2px;
+    font-size: 6px;
     color: #777;
 }
 
-
-.empty-message {
-
-    grid-column: 1 / -1;
-
-    padding: 40px 20px;
-
-    text-align: center;
-
-    color: #888;
-
-    font-size: 14px;
-}
-
-
-/* =========================
-   FOOTER
-========================= */
-
 .footer {
-
     text-align: center;
-
     margin-top: 25px;
-
     padding-top: 18px;
-
-    border-top:
-        1px solid
-        #eee7d5;
-
+    border-top: 1px solid #eee7d5;
     color: #888;
-
     font-size: 12px;
-
     line-height: 1.6;
 }
 
-
 .footer strong {
-
     color: #9a7100;
 }
-
-
-/* =========================
-   MOBILE
-========================= */
 
 @media(max-width:650px) {
 
     .controls {
-
-        grid-template-columns:
-            1fr;
-
+        grid-template-columns: 1fr;
     }
-
 
     #printArea {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-
+        grid-template-columns: repeat(2,1fr);
         gap: 8px;
-
         padding: 8px;
-
     }
-
-
-    .label {
-
-        min-height: 125px;
-
-    }
-
 
     .control-card {
-
         padding: 22px 18px;
-
     }
-
 }
-
-
-@media(max-width:380px) {
-
-    #printArea {
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-}
-
-
-/* =========================
-   BROWSER PRINT
-========================= */
 
 @media print {
 
     @page {
-
         size: A4;
-
         margin: 8mm;
-
     }
-
 
     body {
-
         background: white;
-
         padding: 0;
-
     }
-
 
     .control-card,
     .footer {
-
         display: none !important;
-
     }
-
 
     #printArea {
-
         display: grid;
-
-        grid-template-columns:
-            repeat(3, 1fr);
-
+        grid-template-columns: repeat(3,1fr);
         gap: 4mm;
-
         padding: 0;
-
     }
-
 
     .label {
-
-        border:
-            0.3mm solid
-            #cccccc;
-
-        min-height: 38mm;
-
+        min-height: 40mm;
+        border: 0.3mm solid #ccc;
         break-inside: avoid;
-
         page-break-inside: avoid;
-
     }
-
 }
 
 </style>
@@ -608,30 +279,21 @@ h1 {
 
 <body>
 
-
 <div class="container">
 
 
 <section class="control-card">
 
-
 <div class="top-line"></div>
 
-
-<h1>
-KUU SPA+ Batch Barcode Labels
-</h1>
-
+<h1>KUU SPA+ Batch Barcode Labels</h1>
 
 <p class="subtitle">
-
-Production-ready Code 128 barcode label generator
-
+Production-ready barcode and QR code label generator
 </p>
 
 
 <div class="controls">
-
 
 <div class="field">
 
@@ -661,7 +323,7 @@ id="endNumber"
 type="number"
 min="1"
 max="2000"
-value="100"
+value="5"
 >
 
 </div>
@@ -679,78 +341,42 @@ Generate Barcode Labels
 
 <div class="quick-ranges">
 
-
-<button
-class="range-button"
-onclick="setRange(1,100)"
->
+<button class="range-button" onclick="setRange(1,100)">
 1–100
 </button>
 
-
-<button
-class="range-button"
-onclick="setRange(101,200)"
->
+<button class="range-button" onclick="setRange(101,200)">
 101–200
 </button>
 
-
-<button
-class="range-button"
-onclick="setRange(201,300)"
->
+<button class="range-button" onclick="setRange(201,300)">
 201–300
 </button>
 
-
-<button
-class="range-button"
-onclick="setRange(301,400)"
->
+<button class="range-button" onclick="setRange(301,400)">
 301–400
 </button>
 
-
-<button
-class="range-button"
-onclick="setRange(401,500)"
->
+<button class="range-button" onclick="setRange(401,500)">
 401–500
 </button>
 
-
-<button
-class="range-button"
-onclick="setRange(501,1000)"
->
+<button class="range-button" onclick="setRange(501,1000)">
 501–1000
 </button>
 
-
-<button
-class="range-button"
-onclick="setRange(1001,1500)"
->
+<button class="range-button" onclick="setRange(1001,1500)">
 1001–1500
 </button>
 
-
-<button
-class="range-button"
-onclick="setRange(1501,2000)"
->
+<button class="range-button" onclick="setRange(1501,2000)">
 1501–2000
 </button>
-
 
 </div>
 
 
-<div
-id="message"
-class="message"
->
+<div id="message" class="message">
 Select a range and generate labels.
 </div>
 
@@ -780,9 +406,15 @@ style="display:none;"
 
 <section id="printArea">
 
-<div class="empty-message">
+<div class="label">
 
-Your barcode labels will appear here.
+<div class="label-brand">
+KUU SPA+
+</div>
+
+<div class="label-product">
+Turmeric Whitening Serum
+</div>
 
 </div>
 
@@ -805,798 +437,737 @@ Powered by
 
 <script>
 
-
-/* =========================
-   ELEMENTS
-========================= */
-
 const startInput =
-document.getElementById(
-"startNumber"
-);
-
+document.getElementById("startNumber");
 
 const endInput =
-document.getElementById(
-"endNumber"
-);
-
+document.getElementById("endNumber");
 
 const printArea =
-document.getElementById(
-"printArea"
-);
-
+document.getElementById("printArea");
 
 const message =
-document.getElementById(
-"message"
-);
-
+document.getElementById("message");
 
 const printButton =
-document.getElementById(
-"printButton"
-);
-
+document.getElementById("printButton");
 
 const pdfButton =
-document.getElementById(
-"pdfButton"
-);
+document.getElementById("pdfButton");
 
 
-/* =========================
-   CURRENT RANGE
-========================= */
+const verificationURL =
+"https://edehsandra371-svg.github.io/kuu-spa-verify-v2/";
+
 
 let currentStart = 0;
 
 let currentEnd = 0;
 
 
-/* =========================
-   QUICK RANGE
-========================= */
+function setRange(start,end) {
 
-function setRange(start, end) {
+    startInput.value = start;
 
-startInput.value = start;
+    endInput.value = end;
 
-endInput.value = end;
-
-generateLabels();
+    generateLabels();
 
 }
 
-
-/* =========================
-   GENERATE LABELS
-========================= */
 
 function generateLabels() {
 
-const start =
-parseInt(
-startInput.value,
-10
-);
+    const start =
+        parseInt(startInput.value,10);
+
+    const end =
+        parseInt(endInput.value,10);
+
+    printArea.innerHTML = "";
+
+    printButton.style.display = "none";
+
+    pdfButton.style.display = "none";
 
 
-const end =
-parseInt(
-endInput.value,
-10
-);
+    if (
+        Number.isNaN(start) ||
+        Number.isNaN(end)
+    ) {
+
+        showMessage(
+            "Please enter a valid range."
+        );
+
+        return;
+    }
 
 
-printArea.innerHTML = "";
+    if (
+        start < 1 ||
+        end > 2000
+    ) {
+
+        showMessage(
+            "Batch B1 contains serial numbers 1–2000."
+        );
+
+        return;
+    }
 
 
-printButton.style.display =
-"none";
+    if (start > end) {
+
+        showMessage(
+            "Start number cannot be greater than end number."
+        );
+
+        return;
+    }
 
 
-pdfButton.style.display =
-"none";
+    const total =
+        end - start + 1;
 
 
-if (
-Number.isNaN(start) ||
-Number.isNaN(end)
-) {
+    if (total > 500) {
 
-showMessage(
-"Please enter a valid start and end number."
-);
+        showMessage(
+            "Please generate a maximum of 500 labels at a time."
+        );
 
-return;
-
-}
+        return;
+    }
 
 
-if (
-start < 1 ||
-end < 1
-) {
+    currentStart = start;
 
-showMessage(
-"Serial numbers must start from 1."
-);
-
-return;
-
-}
+    currentEnd = end;
 
 
-if (
-start > 2000 ||
-end > 2000
-) {
-
-showMessage(
-"Batch B1 contains serial numbers 1–2000."
-);
-
-return;
-
-}
+    showMessage(
+        "Generating " +
+        total +
+        " labels..."
+    );
 
 
-if (start > end) {
+    for (
+        let number = start;
+        number <= end;
+        number++
+    ) {
 
-showMessage(
-"The start number cannot be greater than the end number."
-);
+        const serial =
+            "KSP-B1-" +
+            String(number).padStart(6,"0");
 
-return;
+        createLabel(serial);
 
-}
-
-
-const total =
-end - start + 1;
-
-
-/*
-Maximum 500 labels per
-generation for Android
-browser performance.
-*/
-
-if (total > 500) {
-
-showMessage(
-"Please generate a maximum of 500 labels at a time."
-);
-
-return;
-
-}
+    }
 
 
-currentStart = start;
-
-currentEnd = end;
-
-
-showMessage(
-"Generating " +
-total +
-" barcode labels..."
-);
+    showMessage(
+        "✅ " +
+        total +
+        " barcode and QR labels generated."
+    );
 
 
-for (
-let number = start;
-number <= end;
-number++
-) {
+    printButton.style.display = "block";
 
-const serial =
-"KSP-B1-" +
-String(number)
-.padStart(6, "0");
-
-
-createLabel(serial);
+    pdfButton.style.display = "block";
 
 }
 
-
-showMessage(
-"✅ " +
-total +
-" barcode labels generated."
-);
-
-
-printButton.style.display =
-"block";
-
-
-pdfButton.style.display =
-"block";
-
-}
-
-
-/* =========================
-   CREATE LABEL
-========================= */
 
 function createLabel(serial) {
 
-const label =
-document.createElement(
-"div"
-);
+    const label =
+        document.createElement("div");
+
+    label.className = "label";
 
 
-label.className =
-"label";
+    const brand =
+        document.createElement("div");
+
+    brand.className = "label-brand";
+
+    brand.textContent =
+        "KUU SPA+";
 
 
-const brand =
-document.createElement(
-"div"
-);
+    const product =
+        document.createElement("div");
+
+    product.className =
+        "label-product";
+
+    product.textContent =
+        "Turmeric Whitening Serum";
 
 
-brand.className =
-"label-brand";
+    const svg =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "svg"
+        );
+
+    svg.classList.add(
+        "barcode-svg"
+    );
 
 
-brand.textContent =
-"KUU SPA+";
+    const serialText =
+        document.createElement("div");
+
+    serialText.className =
+        "label-serial";
+
+    serialText.textContent =
+        serial;
 
 
-const product =
-document.createElement(
-"div"
-);
+    const qrBox =
+        document.createElement("div");
+
+    qrBox.className =
+        "qr-preview";
 
 
-product.className =
-"label-product";
+    const verifyText =
+        document.createElement("div");
+
+    verifyText.className =
+        "label-verify";
+
+    verifyText.textContent =
+        "Scan to verify authenticity";
 
 
-product.textContent =
-"Turmeric Whitening Serum";
+    label.appendChild(brand);
+
+    label.appendChild(product);
+
+    label.appendChild(svg);
+
+    label.appendChild(serialText);
+
+    label.appendChild(qrBox);
+
+    label.appendChild(verifyText);
+
+    printArea.appendChild(label);
 
 
-const svg =
-document.createElementNS(
-"http://www.w3.org/2000/svg",
-"svg"
-);
+    try {
+
+        JsBarcode(
+            svg,
+            serial,
+            {
+                format: "CODE128",
+                width: 1.3,
+                height: 42,
+                displayValue: false,
+                margin: 2
+            }
+        );
+
+    } catch(error) {
+
+        console.error(
+            "Barcode error:",
+            error
+        );
+
+    }
 
 
-svg.classList.add(
-"barcode-svg"
-);
+    try {
 
+        new QRCode(
+            qrBox,
+            {
+                text:
+                    verificationURL +
+                    "?serial=" +
+                    encodeURIComponent(serial),
 
-const serialText =
-document.createElement(
-"div"
-);
+                width: 35,
 
+                height: 35,
 
-serialText.className =
-"label-serial";
+                correctLevel:
+                    QRCode.CorrectLevel.M
+            }
+        );
 
+    } catch(error) {
 
-serialText.textContent =
-serial;
+        console.error(
+            "QR error:",
+            error
+        );
 
-
-const verifyText =
-document.createElement(
-"div"
-);
-
-
-verifyText.className =
-"label-verify";
-
-
-verifyText.textContent =
-"Scan to verify authenticity";
-
-
-label.appendChild(
-brand
-);
-
-
-label.appendChild(
-product
-);
-
-
-label.appendChild(
-svg
-);
-
-
-label.appendChild(
-serialText
-);
-
-
-label.appendChild(
-verifyText
-);
-
-
-printArea.appendChild(
-label
-);
-
-
-try {
-
-JsBarcode(
-svg,
-serial,
-{
-
-format: "CODE128",
-
-width: 1.4,
-
-height: 45,
-
-displayValue: false,
-
-margin: 3
-
-}
-);
-
-}
-
-catch(error) {
-
-console.error(
-"Barcode error:",
-serial,
-error
-);
+    }
 
 }
 
-}
-
-
-/* =========================
-   MESSAGE
-========================= */
 
 function showMessage(text) {
 
-message.textContent =
-text;
+    message.textContent = text;
 
 }
 
-
-/* =========================
-   NORMAL PRINT
-========================= */
 
 function printLabels() {
 
-if (
-currentStart === 0
-) {
+    if (currentStart === 0) {
 
-showMessage(
-"Please generate barcode labels first."
-);
+        showMessage(
+            "Please generate labels first."
+        );
 
-return;
+        return;
+    }
 
-}
-
-
-window.print();
+    window.print();
 
 }
 
-
-/* =========================
-   EXPORT PDF
-========================= */
 
 async function exportPDF() {
 
-if (
-currentStart === 0
+    if (currentStart === 0) {
+
+        showMessage(
+            "Please generate labels first."
+        );
+
+        return;
+    }
+
+
+    if (
+        typeof window.jspdf ===
+        "undefined"
+    ) {
+
+        showMessage(
+            "❌ PDF library could not load."
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "Preparing production PDF..."
+    );
+
+
+    try {
+
+        const { jsPDF } =
+            window.jspdf;
+
+
+        const pdf =
+            new jsPDF({
+                orientation: "portrait",
+                unit: "mm",
+                format: "a4"
+            });
+
+
+        const pageWidth = 210;
+
+        const pageHeight = 297;
+
+
+        const columns = 3;
+
+        const rows = 6;
+
+
+        const marginX = 8;
+
+        const marginY = 8;
+
+        const gapX = 3;
+
+        const gapY = 3;
+
+
+        const labelWidth =
+            (
+                pageWidth -
+                marginX * 2 -
+                gapX * (columns - 1)
+            ) / columns;
+
+
+        const labelHeight =
+            (
+                pageHeight -
+                marginY * 2 -
+                gapY * (rows - 1)
+            ) / rows;
+
+
+        let labelIndex = 0;
+
+
+        for (
+            let number = currentStart;
+            number <= currentEnd;
+            number++
+        ) {
+
+
+            if (
+                labelIndex > 0 &&
+                labelIndex %
+                (columns * rows) === 0
+            ) {
+
+                pdf.addPage();
+
+            }
+
+
+            const position =
+                labelIndex %
+                (columns * rows);
+
+
+            const column =
+                position % columns;
+
+
+            const row =
+                Math.floor(
+                    position / columns
+                );
+
+
+            const x =
+                marginX +
+                column *
+                (labelWidth + gapX);
+
+
+            const y =
+                marginY +
+                row *
+                (labelHeight + gapY);
+
+
+            const serial =
+                "KSP-B1-" +
+                String(number).padStart(6,"0");
+
+
+            /* Label border */
+
+            pdf.setDrawColor(
+                210,210,210
+            );
+
+            pdf.rect(
+                x,
+                y,
+                labelWidth,
+                labelHeight
+            );
+
+
+            /* Brand */
+
+            pdf.setFont(
+                "helvetica",
+                "bold"
+            );
+
+            pdf.setFontSize(9);
+
+            pdf.text(
+                "KUU SPA+",
+                x + labelWidth / 2,
+                y + 6,
+                {align:"center"}
+            );
+
+
+            /* Product */
+
+            pdf.setFont(
+                "helvetica",
+                "normal"
+            );
+
+            pdf.setFontSize(5.5);
+
+            pdf.text(
+                "Turmeric Whitening Serum",
+                x + labelWidth / 2,
+                y + 10,
+                {align:"center"}
+            );
+
+
+            /* Barcode */
+
+            const barcodeCanvas =
+                document.createElement(
+                    "canvas"
+                );
+
+
+            JsBarcode(
+                barcodeCanvas,
+                serial,
+                {
+                    format:"CODE128",
+                    width:2,
+                    height:45,
+                    displayValue:false,
+                    margin:0
+                }
+            );
+
+
+            pdf.addImage(
+                barcodeCanvas.toDataURL(
+                    "image/png"
+                ),
+                "PNG",
+                x + 3,
+                y + 12,
+                labelWidth - 6,
+                16
+            );
+
+
+            /* Serial */
+
+            pdf.setFont(
+                "helvetica",
+                "bold"
+            );
+
+            pdf.setFontSize(7);
+
+            pdf.text(
+                serial,
+                x + labelWidth / 2,
+                y + 31,
+                {align:"center"}
+            );
+
+
+            /* QR */
+
+            const qrCanvas =
+                document.createElement(
+                    "canvas"
+                );
+
+
+            await createQRCanvas(
+                verificationURL +
+                "?serial=" +
+                encodeURIComponent(serial),
+                qrCanvas
+            );
+
+
+            const qrSize = 11;
+
+
+            pdf.addImage(
+                qrCanvas.toDataURL(
+                    "image/png"
+                ),
+                "PNG",
+                x +
+                labelWidth / 2 -
+                qrSize / 2,
+                y + 33,
+                qrSize,
+                qrSize
+            );
+
+
+            /* Verify text */
+
+            pdf.setFont(
+                "helvetica",
+                "normal"
+            );
+
+            pdf.setFontSize(4.5);
+
+            pdf.text(
+                "Scan to verify authenticity",
+                x + labelWidth / 2,
+                y + 47,
+                {align:"center"}
+            );
+
+
+            labelIndex++;
+
+        }
+
+
+        const filename =
+            "KUU-SPA-B1-QR-Labels-" +
+            String(currentStart).padStart(6,"0") +
+            "-" +
+            String(currentEnd).padStart(6,"0") +
+            ".pdf";
+
+
+        pdf.save(filename);
+
+
+        showMessage(
+            "✅ PDF created successfully: " +
+            filename
+        );
+
+
+    } catch(error) {
+
+        console.error(
+            "PDF error:",
+            error
+        );
+
+        showMessage(
+            "❌ PDF creation failed. Please try again."
+        );
+
+    }
+
+}
+
+
+/*
+Create a QR code on a temporary
+canvas using the QRCode library.
+*/
+
+function createQRCanvas(
+    text,
+    canvas
 ) {
 
-showMessage(
-"Please generate barcode labels first."
-);
+    return new Promise(
+        function(resolve,reject) {
 
-return;
-
-}
-
-
-if (
-typeof window.jspdf ===
-"undefined"
-) {
-
-showMessage(
-"❌ PDF library could not load. Please check your internet connection and try again."
-);
-
-return;
-
-}
+            const holder =
+                document.createElement(
+                    "div"
+                );
 
 
-const total =
-currentEnd -
-currentStart +
-1;
+            holder.style.position =
+                "absolute";
+
+            holder.style.left =
+                "-9999px";
 
 
-showMessage(
-"Preparing PDF for " +
-total +
-" labels..."
-);
+            document.body.appendChild(
+                holder
+            );
 
 
-try {
+            try {
+
+                new QRCode(
+                    holder,
+                    {
+                        text:text,
+                        width:100,
+                        height:100,
+                        correctLevel:
+                            QRCode.CorrectLevel.M
+                    }
+                );
 
 
-const {
-jsPDF
-} = window.jspdf;
+                setTimeout(
+                    function() {
+
+                        const source =
+                            holder.querySelector(
+                                "canvas"
+                            );
 
 
-const pdf =
-new jsPDF(
-{
-orientation: "portrait",
-unit: "mm",
-format: "a4"
-}
-);
+                        if (!source) {
+
+                            holder.remove();
+
+                            reject(
+                                "QR canvas not created"
+                            );
+
+                            return;
+
+                        }
 
 
-/*
-A4 dimensions:
-210mm x 297mm
-*/
+                        canvas.width =
+                            source.width;
 
-const pageWidth = 210;
-
-const pageHeight = 297;
+                        canvas.height =
+                            source.height;
 
 
-/*
-Three columns.
-*/
-
-const columns = 3;
-
-
-/*
-Four rows.
-*/
-
-const rows = 6;
+                        const context =
+                            canvas.getContext(
+                                "2d"
+                            );
 
 
-const marginX = 8;
-
-const marginY = 8;
-
-const gapX = 3;
-
-const gapY = 3;
+                        context.drawImage(
+                            source,
+                            0,
+                            0
+                        );
 
 
-const labelWidth =
-(
-pageWidth -
-marginX * 2 -
-gapX * (columns - 1)
-) / columns;
+                        holder.remove();
+
+                        resolve();
+
+                    },
+                    100
+                );
 
 
-const labelHeight =
-(
-pageHeight -
-marginY * 2 -
-gapY * (rows - 1)
-) / rows;
+            } catch(error) {
 
+                holder.remove();
 
-let labelIndex = 0;
+                reject(error);
 
+            }
 
-/*
-Generate every serial.
-*/
-
-for (
-let number = currentStart;
-number <= currentEnd;
-number++
-) {
-
-
-if (
-labelIndex > 0 &&
-labelIndex %
-(columns * rows) === 0
-) {
-
-pdf.addPage();
+        }
+    );
 
 }
-
-
-const position =
-labelIndex %
-(columns * rows);
-
-
-const column =
-position % columns;
-
-
-const row =
-Math.floor(
-position / columns
-);
-
-
-const x =
-marginX +
-column *
-(labelWidth + gapX);
-
-
-const y =
-marginY +
-row *
-(labelHeight + gapY);
-
-
-const serial =
-"KSP-B1-" +
-String(number)
-.padStart(6, "0");
-
-
-/*
-Label border
-*/
-
-pdf.setDrawColor(
-210,
-210,
-210
-);
-
-pdf.rect(
-x,
-y,
-labelWidth,
-labelHeight
-);
-
-
-/*
-Brand
-*/
-
-pdf.setFont(
-"helvetica",
-"bold"
-);
-
-pdf.setFontSize(
-9
-);
-
-pdf.text(
-"KUU SPA+",
-x + labelWidth / 2,
-y + 6,
-{
-align: "center"
-}
-);
-
-
-/*
-Product
-*/
-
-pdf.setFont(
-"helvetica",
-"normal"
-);
-
-pdf.setFontSize(
-6
-);
-
-pdf.text(
-"Turmeric Whitening Serum",
-x + labelWidth / 2,
-y + 10,
-{
-align: "center"
-}
-);
-
-
-/*
-Create temporary canvas
-for Code 128 barcode.
-*/
-
-const canvas =
-document.createElement(
-"canvas"
-);
-
-
-JsBarcode(
-canvas,
-serial,
-{
-
-format: "CODE128",
-
-width: 2,
-
-height: 50,
-
-displayValue: false,
-
-margin: 0
-
-}
-);
-
-
-/*
-Barcode dimensions
-*/
-
-const barcodeWidth =
-labelWidth - 8;
-
-
-const barcodeHeight =
-18;
-
-
-/*
-Add barcode image
-*/
-
-pdf.addImage(
-canvas.toDataURL(
-"image/png"
-),
-"PNG",
-x + 4,
-y + 13,
-barcodeWidth,
-barcodeHeight
-);
-
-
-/*
-Serial number
-*/
-
-pdf.setFont(
-"helvetica",
-"bold"
-);
-
-pdf.setFontSize(
-7
-);
-
-pdf.text(
-serial,
-x + labelWidth / 2,
-y + 35,
-{
-align: "center"
-}
-);
-
-
-/*
-Verification text
-*/
-
-pdf.setFont(
-"helvetica",
-"normal"
-);
-
-pdf.setFontSize(
-5
-);
-
-pdf.text(
-"Scan to verify authenticity",
-x + labelWidth / 2,
-y + 40,
-{
-align: "center"
-}
-);
-
-
-labelIndex++;
-
-}
-
-
-/*
-Filename
-*/
-
-const filename =
-"KUU-SPA-B1-Labels-" +
-String(currentStart)
-.padStart(6, "0") +
-"-" +
-String(currentEnd)
-.padStart(6, "0") +
-".pdf";
-
-
-pdf.save(
-filename
-);
-
-
-showMessage(
-"✅ PDF created successfully: " +
-filename
-);
-
-
-}
-
-catch(error) {
-
-console.error(
-"PDF error:",
-error
-);
-
-
-showMessage(
-"❌ PDF creation failed. Please try again."
-);
-
-}
-
-}
-
 
 </script>
 
-
 </body>
-
-    </html>
+</html>
